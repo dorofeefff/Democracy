@@ -18,7 +18,9 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    selected_a = models.BooleanField()
+    group_choice = models.BooleanField()
+    overridden = models.BooleanField()
+    final_choice = models.BooleanField()
 
 
 class Player(BasePlayer):
@@ -37,13 +39,26 @@ class Voting(Page):
 class ResultsWaitPage(WaitPage):
     @staticmethod
     def after_all_players_arrive(group: Group):
+        import random
+
+        # Determine majority vote
         votes_for_a = 0
         for p in group.get_players():
             votes_for_a += int(p.voted_for_a)
         if votes_for_a > 1:
-            group.selected_a = True
+            group.group_choice = True
         else:
-            group.selected_a = False
+            group.group_choice = False
+
+        # Random overriding
+        group.overridden = random.choice([True, False])
+
+        # Determine final choice
+        if group.overridden:
+            group.final_choice = random.choice([True, False])
+        else:
+            group.final_choice = group.group_choice
+
 
 class Results(Page):
     form_model = "group"

@@ -4,7 +4,11 @@
 
 {{ block content }}
 
-{{ group.selected_a }}
+Your group voted {{ group.group_choice }}
+
+You were overridden: {{ group.overridden }}
+
+Final choice: {{ group.final_choice }}
 
     {{ next_button }}
 {{ endblock }}
