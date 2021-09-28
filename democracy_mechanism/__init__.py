@@ -18,25 +18,36 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    pass
+    selected_a = models.BooleanField()
 
 
 class Player(BasePlayer):
-    voted_for_one = models.BooleanField()
+    voted_for_a = models.BooleanField(
+        label="What do you want?",
+        choices=[[True,"Add fair distribution"],[False,"Add unfair distribution"]]
+    )
 
 
 # PAGES
-class MyPage(Page):
+class Voting(Page):
     form_model = "player"
-    form_fields = ["voted_for_one"]
+    form_fields = ["voted_for_a"]
 
 
 class ResultsWaitPage(WaitPage):
-    pass
-
+    @staticmethod
+    def after_all_players_arrive(group: Group):
+        votes_for_a = 0
+        for p in group.get_players():
+            votes_for_a += int(p.voted_for_a)
+        if votes_for_a > 1:
+            group.selected_a = True
+        else:
+            group.selected_a = False
 
 class Results(Page):
-    pass
+    form_model = "group"
 
 
-page_sequence = [MyPage, ResultsWaitPage, Results]
+
+page_sequence = [Voting, ResultsWaitPage, Results]
