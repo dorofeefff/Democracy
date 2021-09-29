@@ -9,7 +9,7 @@ Your app description
 
 class Constants(BaseConstants):
     name_in_url = 'democracy_mechanism'
-    players_per_group = None
+    players_per_group = 2
     num_rounds = 1
 
 
@@ -18,9 +18,12 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
+    # Voting stage
     group_choice = models.BooleanField()
     overridden = models.BooleanField()
     final_choice = models.BooleanField()
+    # Dictator stage
+
 
 
 class Player(BasePlayer):
@@ -45,10 +48,12 @@ class ResultsWaitPage(WaitPage):
         votes_for_a = 0
         for p in group.get_players():
             votes_for_a += int(p.vote)
-        if votes_for_a > 1:
+        if votes_for_a * 2 > Constants.players_per_group:
             group.group_choice = True
-        else:
+        elif votes_for_a * 2 < Constants.players_per_group:
             group.group_choice = False
+        else:
+            group.group_choice = random.choice([True, False])
 
         # Random overriding
         group.overridden = random.choice([True, False])
