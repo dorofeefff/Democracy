@@ -10,7 +10,7 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'democracy_mechanism'
     players_per_group = 2
-    num_rounds = 1
+    num_rounds = 2
     # Initial amount allocated to the dictator
     endowment = cu(100)
 
@@ -20,6 +20,10 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
+    # Treatment
+    treatment = models.CharField(
+        default='Default'
+    )
     # Voting stage
     group_choice = models.BooleanField()
     overridden = models.BooleanField()
@@ -52,8 +56,16 @@ class Voting(Page):
     form_model = "player"
     form_fields = ["vote"]
 
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number > 1
+
 
 class ResultsWaitVoting(WaitPage):
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number > 1
+
     @staticmethod
     def after_all_players_arrive(group: Group):
         import random
@@ -82,13 +94,17 @@ class ResultsWaitVoting(WaitPage):
 class VotingResults(Page):
     form_model = "group"
 
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number > 1
+
 
 class DictatorOffer(Page):
     form_model = 'group'
     form_fields = ['kept']
 
     @staticmethod
-    def is_displayed(player: Player):
+    def is_displayed(player):
         return player.id_in_group % 2 == 1
 
 
