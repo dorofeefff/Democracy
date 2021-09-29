@@ -24,16 +24,16 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    voted_for_a = models.BooleanField(
+    vote = models.BooleanField(
         label="What do you want?",
-        choices=[[True,"Add fair distribution"],[False,"Add unfair distribution"]]
+        choices=[[True, "Add fair distribution"], [False, "Add unfair distribution"]]
     )
 
 
 # PAGES
 class Voting(Page):
     form_model = "player"
-    form_fields = ["voted_for_a"]
+    form_fields = ["vote"]
 
 
 class ResultsWaitPage(WaitPage):
@@ -44,7 +44,7 @@ class ResultsWaitPage(WaitPage):
         # Determine majority vote
         votes_for_a = 0
         for p in group.get_players():
-            votes_for_a += int(p.voted_for_a)
+            votes_for_a += int(p.vote)
         if votes_for_a > 1:
             group.group_choice = True
         else:
@@ -60,9 +60,8 @@ class ResultsWaitPage(WaitPage):
             group.final_choice = group.group_choice
 
 
-class Results(Page):
+class VotingResults(Page):
     form_model = "group"
 
 
-
-page_sequence = [Voting, ResultsWaitPage, Results]
+page_sequence = [Voting, ResultsWaitPage, VotingResults]
