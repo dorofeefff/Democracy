@@ -11,6 +11,8 @@ class Constants(BaseConstants):
     name_in_url = 'democracy_mechanism'
     players_per_group = 2
     num_rounds = 1
+    # Initial amount allocated to the dictator
+    endowment = cu(100)
 
 
 class Subsession(BaseSubsession):
@@ -23,7 +25,11 @@ class Group(BaseGroup):
     overridden = models.BooleanField()
     final_choice = models.BooleanField()
     # Dictator stage
-
+    kept = models.CurrencyField(
+        label="I will keep",
+        min=0,
+        max=Constants.endowment
+    )
 
 
 class Player(BasePlayer):
@@ -33,13 +39,21 @@ class Player(BasePlayer):
     )
 
 
+# FUNCTIONS
+def set_payoffs(group: Group):
+    p1 = group.get_player_by_id(1)
+    p2 = group.get_player_by_id(2)
+    p1.payoff = group.kept
+    p2.payoff = Constants.endowment - group.kept
+
+
 # PAGES
 class Voting(Page):
     form_model = "player"
     form_fields = ["vote"]
 
 
-class ResultsWaitPage(WaitPage):
+class ResultsWaitVoting(WaitPage):
     @staticmethod
     def after_all_players_arrive(group: Group):
         import random
@@ -69,4 +83,25 @@ class VotingResults(Page):
     form_model = "group"
 
 
-page_sequence = [Voting, ResultsWaitPage, VotingResults]
+class DictatorOffer(Page):
+    form_model = 'group'
+    form_fields = ['kept']
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.id_in_group % 2 == 1
+
+
+class ResultsWaitDictator(WaitPage):
+    after_all_players_arrive = set_payoffs
+
+
+class DictatorResults(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        group = player.group
+
+        return dict(offer=Constants.endowment - group.kept)
+
+
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, ResultsWaitDictator, DictatorResults]
