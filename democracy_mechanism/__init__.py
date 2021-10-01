@@ -21,19 +21,15 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     # Treatment
-    treatment = models.CharField(
-        default='Default'
+    treatment = models.StringField(
+        initial='"hallo"'
     )
     # Voting stage
     group_choice = models.BooleanField()
     overridden = models.BooleanField()
     final_choice = models.BooleanField()
     # Dictator stage
-    kept = models.CurrencyField(
-        label="I will keep",
-        min=0,
-        max=Constants.endowment
-    )
+    kept = models.CurrencyField()
 
 
 class Player(BasePlayer):

@@ -6,8 +6,26 @@
         you will keep for yourself.
     </p>
 
-    {{ formfields }}
+<button id="k5" name="kept" value="5">Keep 5</button>
 
-    {{ next_button }}
+<button id="k7" name="kept" value="7">Keep 7</button>
+
+<button id="k8" name="kept" value="8">Keep 8</button>
+
+<button id="k10" name="kept" value="10">Keep 10</button>
 
 {{ endblock }}
+
+<d> {{ group.treatment }}</d>
+
+<script>
+    // Only show buttons "Keep 5" and "Keep 10" in corresponding treatments
+    let k5 = document.getElementById("k5");
+    let k10 = document.getElementById("k10");
+    if ({{ group.treatment }} == "add5") {
+        k5.hidden = false;
+    } else {k5.hidden = true}
+    if ({{ group.treatment }} == "add10") {
+        k10.hidden = false;
+    } else {k10.hidden = true}
+</script>
