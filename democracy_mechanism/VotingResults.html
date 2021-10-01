@@ -4,13 +4,13 @@
 
 {{ block content }}
 
-Your group voted {{ group.group_choice }}
+<div>Your group voted: {{ group_vote }}</div>
 
-You were overridden: {{ group.overridden }}
+<div>You were overridden: {{ overridden }}</div>
 
-Final choice: {{ group.final_choice }}
+<div>Final choice: {{ final }}</div>
 
-    {{ next_button }}
+{{ next_button }}
 {{ endblock }}
 
 
