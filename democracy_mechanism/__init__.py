@@ -22,7 +22,7 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     # Treatment
     treatment = models.StringField(
-        initial='"hallo"'
+        initial='"default"'
     )
     # Voting stage
     group_choice = models.BooleanField()
@@ -85,6 +85,12 @@ class ResultsWaitVoting(WaitPage):
             group.final_choice = random.choice([True, False])
         else:
             group.final_choice = group.group_choice
+
+        # Change group treatment variable
+        if group.final_choice:
+            group.treatment = '"add10"'
+        else:
+            group.treatment = '"add5"'
 
 
 class VotingResults(Page):
