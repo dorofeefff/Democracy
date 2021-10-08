@@ -11,16 +11,16 @@
 <button id="k_medium2" name="kept" value="8">Keep 8</button>
 <button id="k_selfish" name="kept" value="10">Keep 10</button></p>
 
-<p> Treatment is: {{ group.treatment }}</p>
+<p> Mode is: {{ group.mode }}</p>
 
 <script>
-    // Only show buttons with selfish and fair allocations in corresponding treatments
+    // Only show buttons with selfish and fair allocations in corresponding modes
     let k_fair = document.getElementById("k_fair");
     let k_selfish = document.getElementById("k_selfish");
-    if ({{ group.treatment }} == "fair") {
+    if ({{ group.mode }} == "fair") {
         k_fair.hidden = false;
     } else {k_fair.hidden = true}
-    if ({{ group.treatment }} == "selfish") {
+    if ({{ group.mode }} == "selfish") {
         k_selfish.hidden = false;
     } else {k_selfish.hidden = true}
 </script>

@@ -1,14 +1,18 @@
 {{ block title }}Results{{ endblock }}
 {{ block content }}
-    <p>
 
-        {{ if player.id_in_group == 1 }}
-            You decided to keep <strong>{{ group.kept }}</strong> for yourself.
-        {{ else }}
-            Participant 1 decided to keep <strong>{{ group.kept }}</strong>, so
-            you got <strong>{{ offer }}</strong>.
-        {{ endif }}
+    <div id="message">wtf</div>
 
-        {{ next_button }}
-    </p>
+    {{ next_button }}
+
+<script>
+    document.getElementById("message").innerHTML = "ffff";
+    let playerId = {{ player.id_in_group }};
+    //let kept = {{ player.kept }}.toString();
+    if (playerId % 2 == 1) {
+        document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ kept }} </strong> for yourself.'
+    } else {
+       document.getElementById('message').innerHTML = 'Participant 1 decided to keep <strong>{{ kept }}</strong>, so you got <strong>{{ offer }}</strong>.';
+    }
+</script>
 {{ endblock }}

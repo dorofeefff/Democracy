@@ -9,7 +9,7 @@ Your app description
 
 class Constants(BaseConstants):
     name_in_url = 'democracy_mechanism'
-    players_per_group = 2
+    players_per_group = 4
     num_rounds = 2
     # Initial amount allocated to the dictator
     endowment = cu(10)
@@ -20,32 +20,36 @@ class Subsession(BaseSubsession):
 
 
 class Group(BaseGroup):
-    # Treatment
-    treatment = models.StringField(
+    # mode
+    mode = models.StringField(
         initial='"default"'
     )
     # Voting stage
     group_vote = models.IntegerField()
     overridden = models.BooleanField()
     final_group_choice = models.IntegerField()
-    # Dictator stage
-    kept = models.CurrencyField()
 
 
 class Player(BasePlayer):
+    # Voting stage
     vote = models.IntegerField(
         label="What do you want?",
         choices=[[0, "Add fair distribution"], [1, "Add selfish distribution"]]
+    )
+    # Dictator stage
+    kept = models.CurrencyField(
+        initial=0
     )
 
 
 # FUNCTIONS
 def set_payoffs(group: Group):
-    # Sets payoffs for dictator (p1) and receiver (p2)
-    p1 = group.get_player_by_id(1)
-    p2 = group.get_player_by_id(2)
-    p1.payoff = group.kept
-    p2.payoff = Constants.endowment - group.kept
+    # Sets payoffs for dictators (odd ids) and receiver (even ids)
+    for i in range(1, Constants.players_per_group, 2):
+        dictator = group.get_player_by_id(i)
+        receiver = group.get_player_by_id(i+1)
+        dictator.payoff = dictator.kept
+        receiver.payoff = Constants.endowment - dictator.kept
 
 
 # PAGES
@@ -87,11 +91,11 @@ class ResultsWaitVoting(WaitPage):
         else:
             group.final_group_choice = group.group_vote
 
-        # Change group treatment variable
+        # Change group mode variable
         if group.final_group_choice == 0:
-            group.treatment = '"fair"'
+            group.mode = '"fair"'
         else:
-            group.treatment = '"selfish"'
+            group.mode = '"selfish"'
 
 
 class VotingResults(Page):
@@ -113,7 +117,7 @@ class VotingResults(Page):
 
 
 class DictatorOffer(Page):
-    form_model = 'group'
+    form_model = 'player'
     form_fields = ['kept']
 
     @staticmethod
@@ -126,10 +130,12 @@ class ResultsWaitDictator(WaitPage):
 
 
 class DictatorResults(Page):
+    pass
     @staticmethod
     def vars_for_template(player):
-        group = player.group
-        return dict(offer=Constants.endowment - group.kept)
+        x = player.id_in_group
+        dictator = player.group.get_player_by_id(x - ((x+1) % 2))
+        return dict(kept=dictator.kept, offer=Constants.endowment - dictator.kept)
 
 
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, ResultsWaitDictator, DictatorResults]
