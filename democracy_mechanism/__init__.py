@@ -1,4 +1,5 @@
 from otree.api import *
+import random
 
 c = Currency
 
@@ -25,6 +26,7 @@ class Group(BaseGroup):
         initial='"default"'
     )
     # Voting stage
+    sum_vote = models.IntegerField()
     group_vote = models.IntegerField()
     overridden = models.BooleanField()
     final_group_choice = models.IntegerField()
@@ -37,6 +39,8 @@ class Player(BasePlayer):
         choices=[[0, "Add fair distribution"], [1, "Add selfish distribution"]]
     )
     # Dictator stage
+    type = models.StringField()
+    partner = models.IntegerField()
     kept = models.CurrencyField(
         initial=0
     )
@@ -44,13 +48,25 @@ class Player(BasePlayer):
 
 # FUNCTIONS
 def set_payoffs(group: Group):
-    # Sets payoffs for dictators (odd ids) and receiver (even ids)
-    for i in range(1, Constants.players_per_group, 2):
-        dictator = group.get_player_by_id(i)
-        receiver = group.get_player_by_id(i+1)
-        dictator.payoff = dictator.kept
-        receiver.payoff = Constants.endowment - dictator.kept
+    # Sets payoffs for Senders and Receivers
+    for player in group.get_players():
+        if player.type == "Sender":
+            player.payoff = player.kept
+        else:
+            partner = group.get_player_by_id(player.partner)
+            player.kept = partner.kept
+            player.payoff = Constants.endowment - partner.kept
 
+
+def creating_session(subsession):
+    # Assign roles and break into pairs
+    players = subsession.get_players()
+    random.shuffle(players)
+    for i in range(0, len(players), 2):
+        players[i].type = 'Sender'
+        players[i+1].type = 'Receiver'
+        players[i].partner = players[i+1].id_in_group
+        players[i+1].partner = players[i].id_in_group
 
 # PAGES
 class Voting(Page):
@@ -69,15 +85,15 @@ class ResultsWaitVoting(WaitPage):
 
     @staticmethod
     def after_all_players_arrive(group: Group):
-        import random
 
         # Determine majority vote
-        sum_vote = 0
+        s = 0
         for p in group.get_players():
-            sum_vote += p.vote
-        if sum_vote * 2 < Constants.players_per_group:
+            s += p.vote
+        group.sum_vote = s
+        if s * 2 < Constants.players_per_group:
             group.group_vote = 0  # majority for 0
-        elif sum_vote * 2 > Constants.players_per_group:
+        elif s * 2 > Constants.players_per_group:
             group.group_vote = 1  # majority for 1
         else:
             group.group_vote = 2  # group tied
@@ -122,7 +138,7 @@ class DictatorOffer(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.id_in_group % 2 == 1
+        return player.type == "Sender"
 
 
 class ResultsWaitDictator(WaitPage):
@@ -133,9 +149,7 @@ class DictatorResults(Page):
     pass
     @staticmethod
     def vars_for_template(player):
-        x = player.id_in_group
-        dictator = player.group.get_player_by_id(x - ((x+1) % 2))
-        return dict(kept=dictator.kept, offer=Constants.endowment - dictator.kept)
+        return dict(kept=player.kept, offer=Constants.endowment - player.kept)
 
 
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, ResultsWaitDictator, DictatorResults]

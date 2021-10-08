@@ -7,9 +7,9 @@
 
 <script>
     document.getElementById("message").innerHTML = "ffff";
-    let playerId = {{ player.id_in_group }};
+    let playerType = "{{ player.type }}";
     //let kept = {{ player.kept }}.toString();
-    if (playerId % 2 == 1) {
+    if (playerType == "Sender") {
         document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ kept }} </strong> for yourself.'
     } else {
        document.getElementById('message').innerHTML = 'Participant 1 decided to keep <strong>{{ kept }}</strong>, so you got <strong>{{ offer }}</strong>.';
