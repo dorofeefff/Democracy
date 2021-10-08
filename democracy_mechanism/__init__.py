@@ -25,17 +25,17 @@ class Group(BaseGroup):
         initial='"default"'
     )
     # Voting stage
-    group_vote = models.BooleanField()
+    group_vote = models.IntegerField()
     overridden = models.BooleanField()
-    final_group_choice = models.BooleanField()
+    final_group_choice = models.IntegerField()
     # Dictator stage
     kept = models.CurrencyField()
 
 
 class Player(BasePlayer):
-    vote = models.BooleanField(
+    vote = models.IntegerField(
         label="What do you want?",
-        choices=[[True, "Add fair distribution"], [False, "Add selfish distribution"]]
+        choices=[[0, "Add fair distribution"], [1, "Add selfish distribution"]]
     )
 
 
@@ -68,30 +68,30 @@ class ResultsWaitVoting(WaitPage):
         import random
 
         # Determine majority vote
-        votes_for_a = 0
+        sum_vote = 0
         for p in group.get_players():
-            votes_for_a += int(p.vote)
-        if votes_for_a * 2 > Constants.players_per_group:
-            group.group_vote = True
-        elif votes_for_a * 2 < Constants.players_per_group:
-            group.group_vote = False
+            sum_vote += p.vote
+        if sum_vote * 2 < Constants.players_per_group:
+            group.group_vote = 0  # majority for 0
+        elif sum_vote * 2 > Constants.players_per_group:
+            group.group_vote = 1  # majority for 1
         else:
-            group.group_vote = random.choice([True, False])
+            group.group_vote = 2  # group tied
 
         # Random overriding
         group.overridden = random.choice([True, False])
 
         # Determine final choice
-        if group.overridden:
-            group.final_group_choice = random.choice([True, False])
+        if group.overridden or group.group_vote == 2:
+            group.final_group_choice = random.choice([0, 1])
         else:
             group.final_group_choice = group.group_vote
 
         # Change group treatment variable
-        if group.final_group_choice:
-            group.treatment = '"selfish"'
-        else:
+        if group.final_group_choice == 0:
             group.treatment = '"fair"'
+        else:
+            group.treatment = '"selfish"'
 
 
 class VotingResults(Page):
@@ -104,13 +104,12 @@ class VotingResults(Page):
 
     @staticmethod
     def vars_for_template(player):
-        translate = {True: "Fair distribution", False: "Selfish distribution"}
+        translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
         return dict(
             group_vote=translate[player.group.group_vote],
             overridden=player.group.overridden,
             final=translate[player.group.final_group_choice]
         )
-
 
 
 class DictatorOffer(Page):
