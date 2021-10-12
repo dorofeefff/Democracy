@@ -47,6 +47,7 @@ class Player(BasePlayer):
         initial=0
     )
     beliefs = models.CurrencyField()
+    feedback = models.LongStringField()
 
 
 # FUNCTIONS
@@ -168,10 +169,18 @@ class ResultsWaitDictator(WaitPage):
 
 
 class DictatorResults(Page):
-    pass
     @staticmethod
     def vars_for_template(player):
         return dict(kept=player.kept, offer=Constants.endowment - player.kept)
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, DictatorBeliefs, ResultsWaitDictator, DictatorResults]
+class Feedback(Page):
+    form_model = "player"
+    form_fields = ["feedback"]
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == Constants.num_rounds
+
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
+                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
