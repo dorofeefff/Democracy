@@ -142,6 +142,15 @@ class DictatorOffer(Page):
     def is_displayed(player):
         return player.type == "Sender"
 
+    @staticmethod
+    def vars_for_template(player):
+        if player.session.config["spread"] == "small":
+            return dict(fair_option=6,
+                        selfish_option=9)
+        elif player.session.config["spread"] == "big":
+            return dict(fair_option=5,
+                        selfish_option=10)
+
 
 class ResultsWaitDictator(WaitPage):
     after_all_players_arrive = set_payoffs
