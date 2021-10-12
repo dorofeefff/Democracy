@@ -26,9 +26,7 @@ class Group(BaseGroup):
         initial='"default"'
     )
     # treatment
-    spread = models.StringField(
-        initial='"default"'
-    )
+    spread = models.StringField()
     # Voting stage
     sum_vote = models.IntegerField()
     group_vote = models.IntegerField()
@@ -48,6 +46,7 @@ class Player(BasePlayer):
     kept = models.CurrencyField(
         initial=0
     )
+    beliefs = models.CurrencyField()
 
 
 # FUNCTIONS
@@ -159,6 +158,11 @@ class DictatorOffer(Page):
                         selfish_option=10)
 
 
+class DictatorBeliefs(Page):
+   form_model = "player"
+   form_fields = ["beliefs"]
+
+
 class ResultsWaitDictator(WaitPage):
     after_all_players_arrive = set_payoffs
 
@@ -170,4 +174,4 @@ class DictatorResults(Page):
         return dict(kept=player.kept, offer=Constants.endowment - player.kept)
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, ResultsWaitDictator, DictatorResults]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer, DictatorBeliefs, ResultsWaitDictator, DictatorResults]

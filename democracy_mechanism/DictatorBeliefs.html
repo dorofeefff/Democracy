@@ -1,0 +1,15 @@
+{{ block title }}
+    Evaluating Beliefs
+{{ endblock }}
+{{ block content }}
+
+{{ if player.type == "Sender" }}
+    You are Sender. Please write down how much you think other Senders in your group will send.
+{{ else }}
+    You are Receiver. Please write down how much you think other Receivers in your group will receive.
+{{ endif }}
+
+    {{ formfields }}
+    {{ next_button }}
+
+{{ endblock }}
