@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         name='democracy_mechanism',
         display_name="Democracy",
         app_sequence=['democracy_mechanism', 'payment_info'],
-        num_demo_participants=4,
+        num_demo_participants=2,
     ),
 ]
 

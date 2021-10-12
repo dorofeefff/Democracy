@@ -10,7 +10,7 @@ Your app description
 
 class Constants(BaseConstants):
     name_in_url = 'democracy_mechanism'
-    players_per_group = 4
+    players_per_group = 2
     num_rounds = 2
     # Initial amount allocated to the dictator
     endowment = cu(10)
@@ -126,6 +126,8 @@ class VotingResults(Page):
     def vars_for_template(player):
         translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
         return dict(
+            selfish_vote=player.group.sum_vote,
+            fair_vote=Constants.players_per_group-player.group.sum_vote,
             group_vote=translate[player.group.group_vote],
             overridden=player.group.overridden,
             final=translate[player.group.final_group_choice]
