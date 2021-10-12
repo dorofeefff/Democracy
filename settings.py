@@ -3,11 +3,11 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='democracy_mechanism',
+        name='dem',
         display_name="Democracy",
-        app_sequence=['democracy_mechanism', 'payment_info'],
+        app_sequence=['dem', 'payment_info'],
         num_demo_participants=2,
-        spread='small'  # small means adding 6 or 9 to the dictator's choice set; big adds 5 or 10
+        use_browser_bots=True
     ),
 ]
 

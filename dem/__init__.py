@@ -9,7 +9,7 @@ Your app description
 
 
 class Constants(BaseConstants):
-    name_in_url = 'democracy_mechanism'
+    name_in_url = 'dem'
     players_per_group = 2
     num_rounds = 2
     # Initial amount allocated to the dictator
@@ -182,5 +182,14 @@ class Feedback(Page):
     def is_displayed(player):
         return player.round_number == Constants.num_rounds
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
-                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
+
+class PlayerBot(Bot):
+    def play_round(self):
+        yield (pages.Voting, {"vote": 1})
+
+
+page_sequence = [Voting]
+
+
+# page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
+#                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
