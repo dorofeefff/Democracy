@@ -7,7 +7,7 @@ SESSION_CONFIGS = [
         display_name="Democracy",
         app_sequence=['democracy_mechanism', 'payment_info'],
         num_demo_participants=2,
-        spread='big'  # small means adding 6 or 9 to the dictator's choice set; big adds 5 or 10
+        spread='small'  # small means adding 6 or 9 to the dictator's choice set; big adds 5 or 10
     ),
 ]
 
