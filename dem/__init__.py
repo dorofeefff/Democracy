@@ -183,13 +183,8 @@ class Feedback(Page):
         return player.round_number == Constants.num_rounds
 
 
-class PlayerBot(Bot):
-    def play_round(self):
-        yield (pages.Voting, {"vote": 1})
+#page_sequence = [Voting]
 
 
-page_sequence = [Voting]
-
-
-# page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
-#                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
+                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
