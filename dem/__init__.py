@@ -25,8 +25,6 @@ class Group(BaseGroup):
     mode = models.StringField(
         initial='"default"'
     )
-    # treatment
-    spread = models.StringField()
     # Voting stage
     sum_vote = models.IntegerField()
     group_vote = models.IntegerField()
@@ -63,9 +61,6 @@ def set_payoffs(group: Group):
 
 
 def creating_session(subsession):
-    # Randomly choose treatment (spread)
-    for group in subsession.get_groups():
-        group.spread = random.choice(["big", "small"])
     # Assign roles and break into pairs
     players = subsession.get_players()
     random.shuffle(players)
@@ -151,12 +146,8 @@ class DictatorOffer(Page):
 
     @staticmethod
     def vars_for_template(player):
-        if player.group.spread == "small":
-            return dict(fair_option=6,
-                        selfish_option=9)
-        elif player.group.spread == "big":
-            return dict(fair_option=5,
-                        selfish_option=10)
+        return dict(fair_option=6,
+                    selfish_option=9)
 
 
 class DictatorBeliefs(Page):
