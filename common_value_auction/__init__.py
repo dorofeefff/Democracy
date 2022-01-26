@@ -12,15 +12,15 @@ payoff depends on the bid amount and the actual value.<br/>
 """
 
 
-class Constants(BaseConstants):
-    name_in_url = 'common_value_auction'
-    players_per_group = None
-    num_rounds = 1
-    instructions_template = 'common_value_auction/instructions.html'
-    min_allowable_bid = cu(0)
-    max_allowable_bid = cu(10)
+class C(BaseConstants):
+    NAME_IN_URL = 'common_value_auction'
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 1
+    INSTRUCTIONS_TEMPLATE = 'common_value_auction/instructions.html'
+    MIN_ALLOWABLE_BID = cu(0)
+    MAX_ALLOWABLE_BID = cu(10)
     # Error margin for the value estimates shown to the players
-    estimate_error_margin = cu(1)
+    ESTIMATE_ERROR_MARGIN = cu(1)
 
 
 class Subsession(BaseSubsession):
@@ -39,8 +39,8 @@ class Player(BasePlayer):
         doc="""Estimate of the common value, may be different for each player"""
     )
     bid_amount = models.CurrencyField(
-        min=Constants.min_allowable_bid,
-        max=Constants.max_allowable_bid,
+        min=C.MIN_ALLOWABLE_BID,
+        max=C.MAX_ALLOWABLE_BID,
         doc="""Amount bidded by the player""",
         label="Bid amount",
     )
@@ -55,7 +55,7 @@ def creating_session(subsession: Subsession):
         import random
 
         item_value = random.uniform(
-            Constants.min_allowable_bid, Constants.max_allowable_bid
+            C.MIN_ALLOWABLE_BID, C.MAX_ALLOWABLE_BID
         )
         g.item_value = round(item_value, 1)
 
@@ -77,14 +77,14 @@ def set_winner(group: Group):
 def generate_value_estimate(group: Group):
     import random
 
-    minimum = group.item_value - Constants.estimate_error_margin
-    maximum = group.item_value + Constants.estimate_error_margin
+    minimum = group.item_value - C.ESTIMATE_ERROR_MARGIN
+    maximum = group.item_value + C.ESTIMATE_ERROR_MARGIN
     estimate = random.uniform(minimum, maximum)
     estimate = round(estimate, 1)
-    if estimate < Constants.min_allowable_bid:
-        estimate = Constants.min_allowable_bid
-    if estimate > Constants.max_allowable_bid:
-        estimate = Constants.max_allowable_bid
+    if estimate < C.MIN_ALLOWABLE_BID:
+        estimate = C.MIN_ALLOWABLE_BID
+    if estimate > C.MAX_ALLOWABLE_BID:
+        estimate = C.MAX_ALLOWABLE_BID
     return estimate
 
 

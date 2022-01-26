@@ -12,7 +12,7 @@ class PlayerBot(Bot):
             else:
                 yield DictatorBeliefs, {"beliefs": 8}
                 yield DictatorResults
-        elif self.player.round_number < Constants.num_rounds:
+        elif self.player.round_number < C.NUM_ROUNDS:
             if self.player.type == "Sender":
                 yield Voting, {"vote": 1}
                 yield VotingResults

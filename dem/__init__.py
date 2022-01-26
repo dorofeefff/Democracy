@@ -8,12 +8,18 @@ Your app description
 """
 
 
-class Constants(BaseConstants):
-    name_in_url = 'dem'
-    players_per_group = 2
-    num_rounds = 2
+class C(BaseConstants):
+    NAME_IN_URL = 'dem'
+    PLAYERS_PER_GROUP = 3
+    NUM_ROUNDS = 2
     # Initial amount allocated to the dictator
-    endowment = cu(10)
+    ENDOWMENT = cu(10)
+    # Max payoff of guesser
+    GUESSER_ENDOWMENT = cu(5)
+    # Roles
+    SENDER_ROLE = 'Sender'
+    RECEIVER_ROLE = 'Receiver'
+    GUESSER_ROLE = 'Guesser'
 
 
 class Subsession(BaseSubsession):
@@ -30,6 +36,10 @@ class Group(BaseGroup):
     group_vote = models.IntegerField()
     overridden = models.BooleanField()
     final_group_choice = models.IntegerField()
+    # Dictator stage
+    type = models.StringField()
+    kept = models.CurrencyField()
+    guess = models.CurrencyField()
 
 
 class Player(BasePlayer):
@@ -38,37 +48,24 @@ class Player(BasePlayer):
         label="What do you want?",
         choices=[[0, "Add fair distribution"], [1, "Add selfish distribution"]]
     )
-    # Dictator stage
-    type = models.StringField()
-    partner = models.IntegerField()
-    kept = models.CurrencyField(
-        initial=0
-    )
-    beliefs = models.CurrencyField()
+    # Feedback
     feedback = models.LongStringField()
 
 
 # FUNCTIONS
 def set_payoffs(group: Group):
-    # Sets payoffs for Senders and Receivers
-    for player in group.get_players():
-        if player.type == "Sender":
-            player.payoff = player.kept
-        else:
-            partner = group.get_player_by_id(player.partner)
-            player.kept = partner.kept
-            player.payoff = Constants.endowment - partner.kept
+    sender = group.get_player_by_role(C.SENDER_ROLE)
+    receiver = group.get_player_by_role(C.RECEIVER_ROLE)
+    guesser = group.get_player_by_role(C.GUESSER_ROLE)
+
+    sender.payoff = group.kept
+    receiver.payoff = C.ENDOWMENT - group.kept
+    guesser.payoff = C.GUESSER_ENDOWMENT - abs(group.kept - group.guess)
 
 
 def creating_session(subsession):
-    # Assign roles and break into pairs
-    players = subsession.get_players()
-    random.shuffle(players)
-    for i in range(0, len(players), 2):
-        players[i].type = 'Sender'
-        players[i+1].type = 'Receiver'
-        players[i].partner = players[i+1].id_in_group
-        players[i+1].partner = players[i].id_in_group
+    subsession.group_randomly()
+
 
 # PAGES
 class Voting(Page):
@@ -93,9 +90,9 @@ class ResultsWaitVoting(WaitPage):
         for p in group.get_players():
             s += p.vote
         group.sum_vote = s
-        if s * 2 < Constants.players_per_group:
+        if s * 2 < C.PLAYERS_PER_GROUP:
             group.group_vote = 0  # majority for 0
-        elif s * 2 > Constants.players_per_group:
+        elif s * 2 > C.PLAYERS_PER_GROUP:
             group.group_vote = 1  # majority for 1
         else:
             group.group_vote = 2  # group tied
@@ -129,20 +126,20 @@ class VotingResults(Page):
         translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
         return dict(
             selfish_vote=player.group.sum_vote,
-            fair_vote=Constants.players_per_group-player.group.sum_vote,
+            fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
             group_vote=translate[player.group.group_vote],
             overridden=player.group.overridden,
             final=translate[player.group.final_group_choice]
         )
 
 
-class DictatorOffer(Page):
-    form_model = 'player'
+class DictatorSend(Page):
+    form_model = 'group'
     form_fields = ['kept']
 
     @staticmethod
     def is_displayed(player):
-        return player.type == "Sender"
+        return player.role == C.SENDER_ROLE
 
     @staticmethod
     def vars_for_template(player):
@@ -150,9 +147,14 @@ class DictatorOffer(Page):
                     selfish_option=9)
 
 
-class DictatorBeliefs(Page):
-   form_model = "player"
-   form_fields = ["beliefs"]
+class DictatorGuess(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.role == C.GUESSER_ROLE
+
+    form_model = 'group'
+    form_fields = ['guess']
 
 
 class ResultsWaitDictator(WaitPage):
@@ -162,7 +164,14 @@ class ResultsWaitDictator(WaitPage):
 class DictatorResults(Page):
     @staticmethod
     def vars_for_template(player):
-        return dict(kept=player.kept, offer=Constants.endowment - player.kept)
+        return dict(
+            kept=player.group.kept,
+            guess=player.group.guess,
+            offer=C.ENDOWMENT - player.group.kept,
+            sender=C.SENDER_ROLE,
+            receiver=C.RECEIVER_ROLE,
+            guesser=C.GUESSER_ROLE
+        )
 
 
 class Feedback(Page):
@@ -171,11 +180,11 @@ class Feedback(Page):
 
     @staticmethod
     def is_displayed(player):
-        return player.round_number == Constants.num_rounds
+        return player.round_number == C.NUM_ROUNDS
 
 
-#page_sequence = [Voting]
+# page_sequence = [Voting]
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorOffer,
-                 DictatorBeliefs, ResultsWaitDictator, DictatorResults, Feedback]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]

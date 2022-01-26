@@ -10,17 +10,17 @@ payoffs.
 """
 
 
-class Constants(BaseConstants):
-    name_in_url = 'prisoner'
-    players_per_group = 2
-    num_rounds = 1
-    instructions_template = 'prisoner/instructions.html'
+class C(BaseConstants):
+    NAME_IN_URL = 'prisoner'
+    PLAYERS_PER_GROUP = 2
+    NUM_ROUNDS = 1
+    INSTRUCTIONS_TEMPLATE = 'prisoner/instructions.html'
     # payoff if 1 player defects and the other cooperates""",
-    betray_payoff = cu(300)
-    betrayed_payoff = cu(0)
+    BETRAY_PAYOFF = cu(300)
+    BETRAYED_PAYOFF = cu(0)
     # payoff if both players cooperate or both defect
-    both_cooperate_payoff = cu(200)
-    both_defect_payoff = cu(100)
+    BOTH_COOPERATE_PAYOFF = cu(200)
+    BOTH_DEFECT_PAYOFF = cu(100)
 
 
 class Subsession(BaseSubsession):
@@ -52,10 +52,10 @@ def other_player(player: Player):
 def set_payoff(player: Player):
     payoff_matrix = dict(
         Cooperate=dict(
-            Cooperate=Constants.both_cooperate_payoff, Defect=Constants.betrayed_payoff
+            Cooperate=C.BOTH_COOPERATE_PAYOFF, Defect=C.BETRAYED_PAYOFF
         ),
         Defect=dict(
-            Cooperate=Constants.betray_payoff, Defect=Constants.both_defect_payoff
+            Cooperate=C.BETRAY_PAYOFF, Defect=C.BOTH_DEFECT_PAYOFF
         ),
     )
     player.payoff = payoff_matrix[player.decision][other_player(player).decision]

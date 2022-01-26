@@ -7,14 +7,14 @@ Your app description
 """
 
 
-class Constants(BaseConstants):
-    name_in_url = 'pris_new'
-    players_per_group = None
-    num_rounds = 2
-    payoff_CC = -1
-    payoff_DD = -3
-    payoff_CD = -4
-    payoff_DC = 0
+class C(BaseConstants):
+    NAME_IN_URL = 'pris_new'
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 2
+    PAYOFF_CC = -1
+    PAYOFF_DD = -3
+    PAYOFF_CD = -4
+    PAYOFF_DC = 0
 
 
 class Subsession(BaseSubsession):
@@ -46,18 +46,18 @@ class ResultsWaitPage(WaitPage):
         player_2 = player_lists[1]
         if player_1.defect:
             if player_2.defect:
-                player_1.payoff = Constants.payoff_DD
-                player_2.payoff = Constants.payoff_DD
+                player_1.payoff = C.PAYOFF_DD
+                player_2.payoff = C.PAYOFF_DD
             else:
-                player_1.payoff = Constants.payoff_DC
-                player_2.payoff - Constants.payoff_CD
+                player_1.payoff = C.PAYOFF_DC
+                player_2.payoff - C.PAYOFF_CD
         else:
             if player_2.defect:
-                player_1.payoff = Constants.payoff_CD
-                player_2.payoff = Constants.payoff_DC
+                player_1.payoff = C.PAYOFF_CD
+                player_2.payoff = C.PAYOFF_DC
             else:
-                player_1.payoff = Constants.payoff_CC
-                player_2.payoff - Constants.payoff_CC
+                player_1.payoff = C.PAYOFF_CC
+                player_2.payoff - C.PAYOFF_CC
 
 class Results(Page):
     pass

@@ -6,13 +6,13 @@
     {{ next_button }}
 
 <script>
-    document.getElementById("message").innerHTML = "ffff";
-    let playerType = "{{ player.type }}";
-    //let kept = {{ player.kept }}.toString();
-    if (playerType == "Sender") {
+    let playerType = "{{ player.role }}";
+    if (playerType == "{{ sender }}") {
         document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ kept }} </strong> for yourself.'
+    } else if (playerType == "{{ receiver }}") {
+       document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ kept }}</strong>, so you got <strong>{{ offer }}</strong>.';
     } else {
-       document.getElementById('message').innerHTML = 'Participant 1 decided to keep <strong>{{ kept }}</strong>, so you got <strong>{{ offer }}</strong>.';
+        document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ kept }}</strong>. Your guess was <strong>{{ guess }}</strong>.'
     }
 </script>
 {{ endblock }}
