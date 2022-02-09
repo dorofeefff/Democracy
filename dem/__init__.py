@@ -143,8 +143,10 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return dict(fair_option=6,
-                    selfish_option=9)
+        return dict(
+            fair_option=6,
+            selfish_option=9
+        )
 
 
 class DictatorGuess(Page):

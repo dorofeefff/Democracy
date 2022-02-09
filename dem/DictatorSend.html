@@ -1,28 +1,65 @@
-{{ block title }}Your Decision{{ endblock }}
 {{ block content }}
-    <p>
-        You are <b>Participant 1</b>.
-        Please decide how much of the {{ C.ENDOWMENT }}
-        you will keep for yourself.
-    </p>
 
-<p><button id="k_fair" name="kept" value="{{ fair_option }}">Keep {{ fair_option }}</button>
-<button id="k_medium1" name="kept" value="7">Keep 7</button>
-<button id="k_medium2" name="kept" value="8">Keep 8</button>
-<button id="k_selfish" name="kept" value="{{ selfish_option }}">Keep {{ selfish_option }}</button></p>
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<hr>
+&nbsp;
 
-<p> Mode is: {{ group.mode }}</p>
+<p>
+    You are <b>Participant 1</b>.
+    Please decide how much of the {{ C.ENDOWMENT }}
+    you will keep for yourself.
+</p>
+
+<div class="input-group">
+    <input type="range"
+           name="kept"
+           id="send_slider"
+           min="1" max="100" step="0.1"
+           value="25"
+           class="form-range">
+</div>
+
+<p id="send_choice"></p>
+<p id="keep_choice"></p>
+
+<button class="otree-btn-next btn btn-primary">Submit</button>
 
 <script>
-    // Only show buttons with selfish and fair allocations in corresponding modes
-    let k_fair = document.getElementById("k_fair");
-    let k_selfish = document.getElementById("k_selfish");
+    if ({{ group.round_number }} > 1) {
+        // Put the number of the part in the title
+        document.getElementById("part").innerHTML = "Part II";
+
+        // Put the number of the round in the title
+        let roundNum = {{ group.round_number }} - 1;
+        let roundStr = roundNum.toString();
+        document.getElementById("round").innerHTML = "Round " + roundStr + ": Decision Stage";
+    }
+
+    // The slider
+    let sendSlider = document.getElementById("send_slider");
+    let sendChoice = document.getElementById("send_choice");
+    let keepChoice = document.getElementById("keep_choice");
+
+    let lowBound = 20;
+    let upBound = 30;
+
     if ({{ group.mode }} == "fair") {
-        k_fair.hidden = false;
-    } else {k_fair.hidden = true}
+        upBound = 40;
+    }
     if ({{ group.mode }} == "selfish") {
-        k_selfish.hidden = false;
-    } else {k_selfish.hidden = true}
+        lowBound = 10;
+    }
+
+    sendChoice.innerHTML = "Your choice: " + sendSlider.value;
+    keepChoice.innerHTML = "You keep for yourself: " + (100 - sendSlider.value).toString();
+
+    sendSlider.oninput = function() {
+        if (this.value < lowBound) {this.value = lowBound};
+        if (this.value > upBound) {this.value = upBound};
+        sendChoice.innerHTML = "Your choice: " + this.value.toString();
+        keepChoice.innerHTML = "You keep for yourself: " + (100 - this.value).toString();
+    }
 </script>
 
 {{ endblock }}
