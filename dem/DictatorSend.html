@@ -6,7 +6,7 @@
 &nbsp;
 
 <p>
-    You are <b>Participant 1</b>.
+    You are <b>Individual A</b>.
     Please decide how much of the {{ C.ENDOWMENT }}
     you will keep for yourself.
 </p>
@@ -51,14 +51,21 @@
         lowBound = 10;
     }
 
-    sendChoice.innerHTML = "Your choice: " + sendSlider.value;
-    keepChoice.innerHTML = "You keep for yourself: " + (100 - sendSlider.value).toString();
+    // Message that the user will see based on their choice
+    function messageToSenderSend(v) {
+        return "Your choice: " + v.toString();
+    }
+    function messageToSenderKeep(v) {
+        return "You keep for yourself: " + (100 - v).toString();
+    }
+    sendChoice.innerHTML = messageToSenderSend(25);
+    keepChoice.innerHTML = messageToSenderKeep(25);
 
     sendSlider.oninput = function() {
         if (this.value < lowBound) {this.value = lowBound};
         if (this.value > upBound) {this.value = upBound};
-        sendChoice.innerHTML = "Your choice: " + this.value.toString();
-        keepChoice.innerHTML = "You keep for yourself: " + (100 - this.value).toString();
+        sendChoice.innerHTML = messageToSenderSend(this.value);
+        keepChoice.innerHTML = messageToSenderKeep(this.value);
     }
 </script>
 

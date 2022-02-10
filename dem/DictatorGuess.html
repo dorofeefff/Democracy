@@ -1,9 +1,66 @@
-{{ block title }}
-    Evaluating Beliefs
-{{ endblock }}
 {{ block content }}
 
-    {{ formfields }}
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<hr>
+&nbsp;
+
+<p>
+    You are <b>Individual C</b>.
+    Please guess how many points out of {{ C.ENDOWMENT }}
+    Individual A will allocate to Individual B.
+</p>
+
+<div class="input-group">
+    <input type="range"
+           name="guess"
+           id="guess_slider"
+           min="1" max="100" step="0.1"
+           value="25"
+           class="form-range">
+</div>
+
+<p id="guess_choice"></p>
+
     {{ next_button }}
+
+<script>
+    if ({{ group.round_number }} > 1) {
+        // Put the number of the part in the title
+        document.getElementById("part").innerHTML = "Part II";
+
+        // Put the number of the round in the title
+        let roundNum = {{ group.round_number }} - 1;
+        let roundStr = roundNum.toString();
+        document.getElementById("round").innerHTML = "Round " + roundStr + ": Decision Stage";
+    }
+
+    // Specify choice set
+    let lowBound = 20;
+    let upBound = 30;
+    if ({{ group.mode }} == "fair") {
+        upBound = 40;
+    }
+    if ({{ group.mode }} == "selfish") {
+        lowBound = 10;
+    }
+
+    // Slider and element where a choice of the user will appear
+    let guessSlider = document.getElementById("guess_slider");
+    let guessChoice = document.getElementById("guess_choice");
+
+    // Message that the user sees based on their choice
+    function messageToUser(v) {
+        return "Your guess: " + v.toString();
+    }
+    guessChoice.innerHTML = messageToUser(25)
+
+    // The slider's behavior
+    guessSlider.oninput = function() {
+        if (this.value < lowBound) {this.value = lowBound}
+        if (this.value > upBound) {this.value = upBound}
+        guessChoice.innerHTML = messageToUser(this.value);
+    }
+</script>
 
 {{ endblock }}

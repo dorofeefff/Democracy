@@ -13,13 +13,13 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 2
     # Initial amount allocated to the dictator
-    ENDOWMENT = cu(10)
+    ENDOWMENT = cu(100)
     # Max payoff of guesser
     GUESSER_ENDOWMENT = cu(5)
     # Roles
-    SENDER_ROLE = 'Sender'
-    RECEIVER_ROLE = 'Receiver'
-    GUESSER_ROLE = 'Guesser'
+    SENDER_ROLE = 'Individual A'
+    RECEIVER_ROLE = 'Individual B'
+    GUESSER_ROLE = 'Individual C'
 
 
 class Subsession(BaseSubsession):
@@ -160,7 +160,11 @@ class DictatorGuess(Page):
 
 
 class ResultsWaitDictator(WaitPage):
+    template_name = 'dem/ResultsWaitDictator.html'
     after_all_players_arrive = set_payoffs
+    @staticmethod
+    def vars_for_template(player):
+        return dict(role=player.role)
 
 
 class DictatorResults(Page):

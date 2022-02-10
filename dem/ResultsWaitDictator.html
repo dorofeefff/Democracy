@@ -1,0 +1,23 @@
+{{ extends 'otree/WaitPage.html' }}
+{{ block content }}
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<hr>
+&nbsp;
+
+    <p>
+        You are {{ role }}.
+    </p>
+
+<script>
+    if ({{ group.round_number }} > 1) {
+        // Put the number of the part in the title
+        document.getElementById("part").innerHTML = "Part II";
+
+        // Put the number of the round in the title
+        let roundNum = {{ group.round_number }} - 1;
+        let roundStr = roundNum.toString();
+        document.getElementById("round").innerHTML = "Round " + roundStr + ": Decision Stage";
+    }
+</script>
+{{ endblock }}
