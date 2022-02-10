@@ -13,9 +13,15 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = 3
     NUM_ROUNDS = 2
     # Initial amount allocated to the dictator
-    ENDOWMENT = cu(100)
-    # Max payoff of guesser
-    GUESSER_ENDOWMENT = cu(5)
+    ENDOWMENT = cu(1000)
+    # The bonus that the guesser gets if correct
+    GUESSER_BONUS = cu(500)
+    # Default choice set
+    DEFAULT_ALLOCATION_MIN = cu(200)
+    DEFAULT_ALLOCATION_MAX = cu(300)
+    # Allocations that are added, according to the two modifications
+    FAIR_ALLOCATION = cu(400)
+    SELFISH_ALLOCATION = cu(100)
     # Roles
     SENDER_ROLE = 'Individual A'
     RECEIVER_ROLE = 'Individual B'
@@ -39,6 +45,7 @@ class Group(BaseGroup):
     # Dictator stage
     type = models.StringField()
     kept = models.CurrencyField()
+    sent = models.CurrencyField()
     guess = models.CurrencyField()
 
 
@@ -59,8 +66,8 @@ def set_payoffs(group: Group):
     guesser = group.get_player_by_role(C.GUESSER_ROLE)
 
     sender.payoff = group.kept
-    receiver.payoff = C.ENDOWMENT - group.kept
-    guesser.payoff = C.GUESSER_ENDOWMENT - abs(group.kept - group.guess)
+    receiver.payoff = group.sent
+    guesser.payoff = int(abs(group.sent - group.guess) <= 1) * C.GUESSER_BONUS
 
 
 def creating_session(subsession):
@@ -135,7 +142,7 @@ class VotingResults(Page):
 
 class DictatorSend(Page):
     form_model = 'group'
-    form_fields = ['kept']
+    form_fields = ['sent']
 
     @staticmethod
     def is_displayed(player):
@@ -145,8 +152,17 @@ class DictatorSend(Page):
     def vars_for_template(player):
         return dict(
             fair_option=6,
-            selfish_option=9
+            selfish_option=9,
+            endowment=C.ENDOWMENT.__int__(),
+            send_min=C.DEFAULT_ALLOCATION_MIN.__int__(),
+            send_max=C.DEFAULT_ALLOCATION_MAX.__int__(),
+            send_fair=C.FAIR_ALLOCATION.__int__(),
+            send_selfish=C.SELFISH_ALLOCATION.__int__()
         )
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.group.kept = C.ENDOWMENT - player.group.sent
 
 
 class DictatorGuess(Page):

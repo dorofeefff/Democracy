@@ -7,16 +7,16 @@
 
 <p>
     You are <b>Individual A</b>.
-    Please decide how much of the {{ C.ENDOWMENT }}
-    you will keep for yourself.
+    Please decide how many of the {{ C.ENDOWMENT }}
+    you will allocate to Individual B.
 </p>
 
 <div class="input-group">
     <input type="range"
-           name="kept"
+           name="sent"
            id="send_slider"
-           min="1" max="100" step="0.1"
-           value="25"
+           min="1" max={{ endowment }} step="1"
+           value="0"
            class="form-range">
 </div>
 
@@ -36,36 +36,33 @@
         document.getElementById("round").innerHTML = "Round " + roundStr + ": Decision Stage";
     }
 
-    // The slider
-    let sendSlider = document.getElementById("send_slider");
-    let sendChoice = document.getElementById("send_choice");
-    let keepChoice = document.getElementById("keep_choice");
-
-    let lowBound = 20;
-    let upBound = 30;
-
+    // Set the choice set
+    let lowBound = {{ send_min }};
+    let upBound = {{ send_max }};
     if ({{ group.mode }} == "fair") {
-        upBound = 40;
+        upBound = {{ send_fair }};
     }
     if ({{ group.mode }} == "selfish") {
-        lowBound = 10;
+        lowBound = {{ send_selfish }};
     }
 
     // Message that the user will see based on their choice
-    function messageToSenderSend(v) {
-        return "Your choice: " + v.toString();
+    function messageToSender(v) {
+        document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString();
+        document.getElementById("keep_choice").innerHTML = "You keep for yourself: " + ({{ endowment }} - v).toString();
     }
-    function messageToSenderKeep(v) {
-        return "You keep for yourself: " + (100 - v).toString();
-    }
-    sendChoice.innerHTML = messageToSenderSend(25);
-    keepChoice.innerHTML = messageToSenderKeep(25);
 
+    // Set the default value for the slider and the default message
+    sendDefault = ({{ send_min }} + {{ send_max }}) / 2;
+    let sendSlider = document.getElementById("send_slider");
+    sendSlider.value = (sendDefault);
+    messageToSender(sendDefault)
+
+    // Behavior of the slider
     sendSlider.oninput = function() {
         if (this.value < lowBound) {this.value = lowBound};
         if (this.value > upBound) {this.value = upBound};
-        sendChoice.innerHTML = messageToSenderSend(this.value);
-        keepChoice.innerHTML = messageToSenderKeep(this.value);
+        messageToSender(this.value);
     }
 </script>
 
