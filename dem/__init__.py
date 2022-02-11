@@ -17,15 +17,24 @@ class C(BaseConstants):
     # The bonus that the guesser gets if correct
     GUESSER_BONUS = cu(500)
     # Default choice set
-    DEFAULT_ALLOCATION_MIN = cu(200)
-    DEFAULT_ALLOCATION_MAX = cu(300)
+    DEFAULT_SEND_MIN = cu(200)
+    DEFAULT_SEND_MAX = cu(300)
     # Allocations that are added, according to the two modifications
-    FAIR_ALLOCATION = cu(400)
-    SELFISH_ALLOCATION = cu(100)
+    FAIR_SEND = cu(400)
+    SELFISH_SEND = cu(100)
     # Roles
     SENDER_ROLE = 'Individual A'
     RECEIVER_ROLE = 'Individual B'
     GUESSER_ROLE = 'Individual C'
+
+
+D = dict(
+    endowment=C.ENDOWMENT.__int__(),
+    send_min=C.DEFAULT_SEND_MIN.__int__(),
+    send_max=C.DEFAULT_SEND_MAX.__int__(),
+    send_fair=C.FAIR_SEND.__int__(),
+    send_selfish=C.SELFISH_SEND.__int__()
+)
 
 
 class Subsession(BaseSubsession):
@@ -44,8 +53,8 @@ class Group(BaseGroup):
     final_group_choice = models.IntegerField()
     # Dictator stage
     type = models.StringField()
-    kept = models.CurrencyField()
-    sent = models.CurrencyField()
+    send = models.CurrencyField()
+    keep = models.CurrencyField()
     guess = models.CurrencyField()
 
 
@@ -65,9 +74,9 @@ def set_payoffs(group: Group):
     receiver = group.get_player_by_role(C.RECEIVER_ROLE)
     guesser = group.get_player_by_role(C.GUESSER_ROLE)
 
-    sender.payoff = group.kept
-    receiver.payoff = group.sent
-    guesser.payoff = int(abs(group.sent - group.guess) <= 1) * C.GUESSER_BONUS
+    sender.payoff = group.keep
+    receiver.payoff = group.send
+    guesser.payoff = int(abs(group.send - group.guess) <= 1) * C.GUESSER_BONUS
 
 
 def creating_session(subsession):
@@ -131,18 +140,12 @@ class VotingResults(Page):
     @staticmethod
     def vars_for_template(player):
         translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
-        return dict(
-            selfish_vote=player.group.sum_vote,
-            fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
-            group_vote=translate[player.group.group_vote],
-            overridden=player.group.overridden,
-            final=translate[player.group.final_group_choice]
-        )
+        return D
 
 
 class DictatorSend(Page):
     form_model = 'group'
-    form_fields = ['sent']
+    form_fields = ['send']
 
     @staticmethod
     def is_displayed(player):
@@ -150,19 +153,11 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return dict(
-            fair_option=6,
-            selfish_option=9,
-            endowment=C.ENDOWMENT.__int__(),
-            send_min=C.DEFAULT_ALLOCATION_MIN.__int__(),
-            send_max=C.DEFAULT_ALLOCATION_MAX.__int__(),
-            send_fair=C.FAIR_ALLOCATION.__int__(),
-            send_selfish=C.SELFISH_ALLOCATION.__int__()
-        )
+        return D
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        player.group.kept = C.ENDOWMENT - player.group.sent
+        player.group.keep = C.ENDOWMENT - player.group.send
 
 
 class DictatorGuess(Page):
@@ -173,6 +168,16 @@ class DictatorGuess(Page):
 
     form_model = 'group'
     form_fields = ['guess']
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            endowment=C.ENDOWMENT.__int__(),
+            send_min=C.DEFAULT_SEND_MIN.__int__(),
+            send_max=C.DEFAULT_SEND_MAX.__int__(),
+            send_fair=C.FAIR_SEND.__int__(),
+            send_selfish=C.SELFISH_SEND.__int__()
+        )
 
 
 class ResultsWaitDictator(WaitPage):
@@ -187,9 +192,9 @@ class DictatorResults(Page):
     @staticmethod
     def vars_for_template(player):
         return dict(
-            kept=player.group.kept,
+            keep=player.group.keep,
+            send=player.group.send,
             guess=player.group.guess,
-            offer=C.ENDOWMENT - player.group.kept,
             sender=C.SENDER_ROLE,
             receiver=C.RECEIVER_ROLE,
             guesser=C.GUESSER_ROLE

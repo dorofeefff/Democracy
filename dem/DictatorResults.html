@@ -8,11 +8,11 @@
 <script>
     let playerType = "{{ player.role }}";
     if (playerType == "{{ sender }}") {
-        document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ kept }} </strong> for yourself.'
+        document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ keep }} </strong> for yourself.'
     } else if (playerType == "{{ receiver }}") {
-       document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ kept }}</strong>, so you got <strong>{{ offer }}</strong>.';
+       document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ keep }}</strong>, so you got <strong>{{ send }}</strong>.';
     } else {
-        document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ kept }}</strong>. Your guess was <strong>{{ guess }}</strong>.'
+        document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ keep }}</strong>. Your guess was <strong>{{ guess }}</strong>.'
     }
 </script>
 {{ endblock }}
