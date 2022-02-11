@@ -63,7 +63,7 @@ class Player(BasePlayer):
     # Voting stage
     vote = models.IntegerField(
         label="What do you want?",
-        choices=[[0, "Add fair distribution"], [1, "Add selfish distribution"]]
+        choices=[[0, "Modification 1"], [1, "Modification 2"]]
     )
     # Feedback
     feedback = models.LongStringField()
@@ -143,7 +143,7 @@ class VotingResults(Page):
 
     @staticmethod
     def vars_for_template(player):
-        translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
+        translate = {0: "Modification 1", 1: "Modification 2", 2: "Tie"}
         return dict(
             selfish_vote=player.group.sum_vote,
             fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
