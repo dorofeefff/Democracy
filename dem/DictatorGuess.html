@@ -30,31 +30,25 @@
     setPartAndRound({{ group.round_number }}, 'decision')
 
     // Set the choice set
-    let lowBound = {{ send_min }};
-    let upBound = {{ send_max }};
-    if ({{ group.mode }} == "fair") {
-        upBound = {{ send_fair }};
-    }
-    if ({{ group.mode }} == "selfish") {
-        lowBound = {{ send_selfish }};
-    }
+    let lowBound = setLowBound({{ send_min }}, {{ send_selfish }}, {{ group.mode }});
+    let upBound = setUpperBound({{ send_max }}, {{ send_fair }}, {{ group.mode }});
 
     // Message that the user sees based on their choice
-    function messageToUser(v) {
-        return "Your guess: " + v.toString();
+    function messageToGuesser(v) {
+        document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString();
     }
 
-    // Slider and element where a choice of the user will appear
+    // Set the default value for the slider and the default message
+    guessDefault = ({{ send_min }} + {{ send_max }}) / 2;
     let guessSlider = document.getElementById("guess_slider");
-    let guessChoice = document.getElementById("guess_choice");
-
-    guessChoice.innerHTML = messageToUser(25)
+    guessSlider.value = guessDefault
+    messageToGuesser(guessDefault)
 
     // The slider's behavior
     guessSlider.oninput = function() {
         if (this.value < lowBound) {this.value = lowBound}
         if (this.value > upBound) {this.value = upBound}
-        guessChoice.innerHTML = messageToUser(this.value);
+        messageToGuesser(this.value);
     }
 </script>
 

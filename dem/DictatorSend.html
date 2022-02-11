@@ -31,14 +31,8 @@
     setPartAndRound({{ group.round_number }}, 'decision')
 
     // Set the choice set
-    let lowBound = {{ send_min }};
-    let upBound = {{ send_max }};
-    if ({{ group.mode }} == "fair") {
-        upBound = {{ send_fair }};
-    }
-    if ({{ group.mode }} == "selfish") {
-        lowBound = {{ send_selfish }};
-    }
+    let lowBound = setLowBound({{ send_min }}, {{ send_selfish }}, {{ group.mode }});
+    let upBound = setUpperBound({{ send_max }}, {{ send_fair }}, {{ group.mode }});
 
     // Message that the user will see based on their choice
     function messageToSender(v) {

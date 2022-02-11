@@ -28,7 +28,8 @@ class C(BaseConstants):
     GUESSER_ROLE = 'Individual C'
 
 
-D = dict(
+# Useful variables for the dictator stage
+dictator_vars = dict(
     endowment=C.ENDOWMENT.__int__(),
     send_min=C.DEFAULT_SEND_MIN.__int__(),
     send_max=C.DEFAULT_SEND_MAX.__int__(),
@@ -153,7 +154,7 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return D
+        return dictator_vars
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -171,13 +172,7 @@ class DictatorGuess(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return dict(
-            endowment=C.ENDOWMENT.__int__(),
-            send_min=C.DEFAULT_SEND_MIN.__int__(),
-            send_max=C.DEFAULT_SEND_MAX.__int__(),
-            send_fair=C.FAIR_SEND.__int__(),
-            send_selfish=C.SELFISH_SEND.__int__()
-        )
+        return dictator_vars
 
 
 class ResultsWaitDictator(WaitPage):
