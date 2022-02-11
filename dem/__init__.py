@@ -75,9 +75,12 @@ def set_payoffs(group: Group):
     receiver = group.get_player_by_role(C.RECEIVER_ROLE)
     guesser = group.get_player_by_role(C.GUESSER_ROLE)
 
+    # Size of error that is allowed to Guesser
+    error = C.ENDOWMENT / 100
+
     sender.payoff = group.keep
     receiver.payoff = group.send
-    guesser.payoff = int(abs(group.send - group.guess) <= 1) * C.GUESSER_BONUS
+    guesser.payoff = int(abs(group.send - group.guess) <= error) * C.GUESSER_BONUS
 
 
 def creating_session(subsession):
@@ -141,7 +144,13 @@ class VotingResults(Page):
     @staticmethod
     def vars_for_template(player):
         translate = {0: "Fair distribution", 1: "Selfish distribution", 2: "Tie"}
-        return D
+        return dict(
+            selfish_vote=player.group.sum_vote,
+            fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
+            group_vote=translate[player.group.group_vote],
+            overridden=player.group.overridden,
+            final=translate[player.group.final_group_choice]
+        )
 
 
 class DictatorSend(Page):

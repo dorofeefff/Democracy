@@ -5,12 +5,7 @@ function getPart(r) {
 
 function getRound(r, stage) {
     if (r == 1) {return ''}
-    else {
-        r = r - 1;
-        if (stage == 'decision') {
-            return 'Round ' + r.toString() + ': Decision Stage'
-        }
-    }
+    else {return 'Round ' + (r-1).toString() + ': ' + stage + ' Stage'}
 }
 
 function setPartAndRound(r, stage) {

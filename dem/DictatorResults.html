@@ -1,18 +1,30 @@
-{{ block title }}Results{{ endblock }}
 {{ block content }}
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<h6>Results</h6>
+<hr>
+&nbsp;
 
     <div id="message">wtf</div>
 
     {{ next_button }}
 
+<script src="{{ static 'someScripts.js' }}"></script>
 <script>
+    // Put correct part and round numbers to the heading
+    setPartAndRound({{ group.round_number }}, 'Decision')
+
+    // Information that the three players see
     let playerType = "{{ player.role }}";
     if (playerType == "{{ sender }}") {
-        document.getElementById("message").innerHTML = 'You decided to keep <strong> {{ keep }} </strong> for yourself.'
+        document.getElementById("message").innerHTML =
+            'You decided to allocate <strong> {{ send }} </strong> to {{ C.RECEIVER_ROLE }} and to keep <strong> {{ keep }} </strong> to yourself.'
     } else if (playerType == "{{ receiver }}") {
-       document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ keep }}</strong>, so you got <strong>{{ send }}</strong>.';
+       document.getElementById('message').innerHTML =
+           '{{ C.SENDER_ROLE }} decided to allocate <strong>{{ send }}</strong> to you and keep <strong>{{ keep }}</strong> for themselves.';
     } else {
-        document.getElementById('message').innerHTML = 'The Sender decided to keep <strong>{{ keep }}</strong>. Your guess was <strong>{{ guess }}</strong>.'
+        document.getElementById('message').innerHTML =
+            '{{ C.SENDER_ROLE }} decided to allocate <strong>{{ send }}</strong> to {{ C.RECEIVER_ROLE }}. Your guess was <strong>{{ guess }}</strong>. Your payoff in this round is {{ player.payoff }}'
     }
 </script>
 {{ endblock }}

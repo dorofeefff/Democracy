@@ -1,9 +1,15 @@
-{{ block title }}
-   Voting Page
-{{ endblock }}
 {{ block content }}
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<hr>
+&nbsp;
 
     {{ formfields }}
     {{ next_button }}
 
+<script src="{{ static 'someScripts.js' }}"></script>
+<script>
+    // Put correct part and round numbers to the heading
+    setPartAndRound({{ group.round_number }}, 'Voting')
+</script>
 {{ endblock }}

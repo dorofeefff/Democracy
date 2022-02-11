@@ -1,5 +1,4 @@
 {{ block content }}
-
 <h2 id="part">Part I</h2>
 <h5 id="round"></h5>
 <hr>
@@ -27,7 +26,7 @@
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'decision')
+    setPartAndRound({{ group.round_number }}, 'Decision')
 
     // Set the choice set
     let lowBound = setLowBound({{ send_min }}, {{ send_selfish }}, {{ group.mode }});
