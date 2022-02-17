@@ -29,7 +29,7 @@ class C(BaseConstants):
 
 
 # Useful variables for the dictator stage
-dictator_vars = dict(
+my_vars = dict(
     endowment=C.ENDOWMENT.__int__(),
     send_min=C.DEFAULT_SEND_MIN.__int__(),
     send_max=C.DEFAULT_SEND_MAX.__int__(),
@@ -95,6 +95,10 @@ class Voting(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number > 1
+
+    @staticmethod
+    def vars_for_template(player):
+        return my_vars
 
 
 class ResultsWaitVoting(WaitPage):
@@ -163,7 +167,7 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return dictator_vars
+        return my_vars
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -181,7 +185,7 @@ class DictatorGuess(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return dictator_vars
+        return my_vars
 
 
 class ResultsWaitDictator(WaitPage):
