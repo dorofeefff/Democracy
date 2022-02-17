@@ -148,11 +148,12 @@ class VotingResults(Page):
     @staticmethod
     def vars_for_template(player):
         translate = {0: "Modification 1", 1: "Modification 2", 2: "Tie"}
+        override_translate = {True: 'Not Considered', False: 'Considered'}
         return dict(
             selfish_vote=player.group.sum_vote,
             fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
             group_vote=translate[player.group.group_vote],
-            overridden=player.group.overridden,
+            overridden=override_translate[player.group.overridden],
             final=translate[player.group.final_group_choice]
         )
 
@@ -218,7 +219,7 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-page_sequence = [Voting]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults]
 
 
 # page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,

@@ -5,15 +5,18 @@
 <hr>
 &nbsp;
 
-<div>Votes for Modification 1: {{ fair_vote }}</div>
+<div><b>{{ fair_vote }}</b> member(s) of your group voted for Modification 1.</div>
 
-<div>Votes for Modification 2: {{ selfish_vote }}</div>
+<div><b>{{ selfish_vote }}</b> member(s) of your group voted for Modification 2.</div>
 
-<div>The majority in your group voted for: {{ group_vote }}</div>
+<div>Therefore, the majority voted for <b>{{ group_vote }}.</b></div>
+&nbsp;
 
-<div>You were overridden: {{ overridden }}</div>
+<div>Your votes were <b>{{ overridden }}</b>.</div>
+&nbsp;
 
-<div>Final choice: {{ final }}</div>
+<div>The Modification that is selected for this round is <b>{{ final }}</b>.</div>
+&nbsp;
 
 {{ next_button }}
 
