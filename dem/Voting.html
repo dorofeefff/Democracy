@@ -3,9 +3,19 @@
 <h5 id="round"></h5>
 <hr>
 &nbsp;
+<p>Please choose one of the two Modifications by pressing a corresponding button below.</p>
 
-    {{ formfields }}
-    {{ next_button }}
+<ul>
+    <li><b>Modification 1</b>: Individual A will be given 100 points and will be able to allocate <b>from 20 to 40 points</b> to Individual B.</li>
+    <li><b>Modification 2</b>: Individual A will be given 100 points and will be able to allocate <b>from 10 to 30 points</b> to Individual B.</li>
+</ul>
+&nbsp;
+
+<p>Your vote:</p>
+
+<button name="vote" value=0 class="btn-primary">Modification 1</button>
+
+<button name="vote" value=1 class="btn-primary">Modification 2</button>
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
