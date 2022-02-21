@@ -21,6 +21,8 @@
 
 <p id="guess_choice"></p>
 
+<p id="second_message"></p>
+
     {{ next_button }}
 
 <script src="{{ static 'someScripts.js' }}"></script>
@@ -30,7 +32,10 @@
 
     // Message that the user sees based on their choice
     function messageToGuesser(v) {
-        document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString();
+        document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString() + ".";
+        const v1 = Math.max(v - {{ error }}, {{ low_bound }});
+        const v2 = Math.min(parseInt(v) + parseInt({{ error }}), {{ up_bound }});
+        document.getElementById("second_message").innerHTML = "You will get " + "{{ bonus }}" + " if Individual A's choice is between " + v1 + " and " + v2 + " points.";
     }
 
     // Set the default value for the slider and the default message

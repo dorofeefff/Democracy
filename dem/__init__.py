@@ -16,6 +16,8 @@ class C(BaseConstants):
     ENDOWMENT = cu(1000)
     # The bonus that the guesser gets if correct
     GUESSER_BONUS = cu(500)
+    # Error that is allowed to the guesser
+    ERROR = cu(10)
     # Default choice set
     DEFAULT_SEND_MIN = cu(200)
     DEFAULT_SEND_MAX = cu(300)
@@ -32,6 +34,8 @@ class C(BaseConstants):
 def my_vars(mode):
     mv = dict(
         endowment=C.ENDOWMENT.__int__(),
+        error=C.ERROR.__int__(),
+        bonus=C.GUESSER_BONUS,
         send_min=C.DEFAULT_SEND_MIN.__int__(),
         send_max=C.DEFAULT_SEND_MAX.__int__(),
         send_fair=C.FAIR_SEND.__int__(),
@@ -86,7 +90,7 @@ def set_payoffs(group: Group):
     guesser = group.get_player_by_role(C.GUESSER_ROLE)
 
     # Size of error that is allowed to Guesser
-    error = C.ENDOWMENT / 100
+    error = C.ERROR
 
     sender.payoff = group.keep
     receiver.payoff = group.send
