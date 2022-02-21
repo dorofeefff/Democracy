@@ -1,22 +1,48 @@
 {{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+        border: 1px solid #ccc;
+    }
+    table {border: 1px solid #ccc}
+    .bgr {background-color: indianred}
+    .bgg {background-color: lightgreen}
+    .nvotes {
+        text-align: right;
+        font-size: small;
+    }
+</style>
 <h2 id="part">Part I</h2>
 <h5 id="round"></h5>
 <h6>Results</h6>
 <hr>
 &nbsp;
 
-<div><b>{{ fair_vote }}</b> member(s) of your group voted for Modification 1.</div>
-
-<div><b>{{ selfish_vote }}</b> member(s) of your group voted for Modification 2.</div>
-
-<div>Therefore, the majority voted for <b>{{ group_vote }}.</b></div>
+<table>
+    <tr>
+        <td>Majority choice</td>
+        <td><b>{{ group_vote }}</b></td>
+    </tr>
+    <tr>
+        <td class="nvotes">- votes for Modification 1</td>
+        <td class="nvotes">{{ fair_vote }}</td>
+    </tr>
+    <tr>
+        <td class="nvotes">- votes for Modification 2</td>
+        <td class="nvotes">{{ selfish_vote }}</td>
+    </tr>
+    <tr>
+        <td>Your votes were</td>
+        <td class="" id="overridden"><b>{{ overridden }}</b></td>
+    </tr>
+    <tr id="computerChoice">
+        <td>The computer randomly chose</td>
+        <td><b>{{ final }}</b></td>
+    </tr>
+</table>
 &nbsp;
 
-<div>Your votes were <b>{{ overridden }}</b>.</div>
-&nbsp;
-
-<div>The Modification that is selected for this round is <b>{{ final }}</b>.</div>
-&nbsp;
+<p>Thus, the Modification that is selected for this round is <b>{{ final }}</b>.</p>
 
 {{ next_button }}
 
@@ -24,6 +50,16 @@
 <script>
     // Put correct part and round numbers to the heading
     setPartAndRound({{ group.round_number }}, 'Voting')
+
+    // Put background color to the overriding cell and show/hide computer decision line
+    if ("{{ overridden }}" == 'Considered') {
+        document.getElementById('overridden').className='bgg'
+        document.getElementById('computerChoice').style.display='none'
+    }
+    else {
+        document.getElementById('overridden').className='bgr'
+        document.getElementById('computerChoice').style.display=''
+    }
 </script>
 {{ endblock }}
 

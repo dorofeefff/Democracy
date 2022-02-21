@@ -202,6 +202,7 @@ class DictatorGuess(Page):
 class ResultsWaitDictator(WaitPage):
     template_name = 'dem/ResultsWaitDictator.html'
     after_all_players_arrive = set_payoffs
+
     @staticmethod
     def vars_for_template(player):
         return dict(role=player.role)
@@ -220,6 +221,10 @@ class DictatorResults(Page):
         )
 
 
+class DictatorAllResults(Page):
+    pass
+
+
 class Feedback(Page):
     form_model = "player"
     form_fields = ["feedback"]
@@ -229,8 +234,8 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-# page_sequence = [Voting, ResultsWaitVoting, VotingResults]
+page_sequence = [DictatorAllResults, Voting, ResultsWaitVoting, VotingResults]
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+#page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+#                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]

@@ -1,0 +1,29 @@
+{{ block content }}
+<h2 id="part">Part I</h2>
+<h5 id="round"></h5>
+<h6>Results</h6>
+<hr>
+&nbsp;
+
+    {{ next_button }}
+
+<p id="container"></p>
+
+<script src="{{ static 'someScripts.js' }}"></script>
+<script>
+    function make(tag, content) {
+        const el = document.createElement(tag);
+        content.forEach(c => el.appendChild(c));
+        return el;
+    }
+
+    document.getElementById("container").appendChild(make(
+        "table", [...Array({{ C.NUM_ROUNDS }}).keys()].map(row => make(
+            "tr", [...Array(22).keys()].map(column => make(
+                "td", [document.createTextNode(row + 1)]
+            ))
+        ))
+    ));
+
+</script>
+{{ endblock }}
