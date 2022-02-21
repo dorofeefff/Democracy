@@ -29,13 +29,23 @@ class C(BaseConstants):
 
 
 # Useful variables for the dictator stage
-my_vars = dict(
-    endowment=C.ENDOWMENT.__int__(),
-    send_min=C.DEFAULT_SEND_MIN.__int__(),
-    send_max=C.DEFAULT_SEND_MAX.__int__(),
-    send_fair=C.FAIR_SEND.__int__(),
-    send_selfish=C.SELFISH_SEND.__int__()
-)
+def my_vars(mode):
+    mv = dict(
+        endowment=C.ENDOWMENT.__int__(),
+        send_min=C.DEFAULT_SEND_MIN.__int__(),
+        send_max=C.DEFAULT_SEND_MAX.__int__(),
+        send_fair=C.FAIR_SEND.__int__(),
+        send_selfish=C.SELFISH_SEND.__int__(),
+        low_bound=C.DEFAULT_SEND_MIN.__int__(),
+        up_bound=C.DEFAULT_SEND_MAX.__int__()
+    )
+
+    if mode == 'fair':
+        mv['up_bound']=C.FAIR_SEND.__int__()
+    elif mode == 'selfish':
+        mv['low_bound']=C.SELFISH_SEND.__int__()
+
+    return mv
 
 
 class Subsession(BaseSubsession):
@@ -168,7 +178,7 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars
+        return my_vars(player.group.mode)
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -186,7 +196,7 @@ class DictatorGuess(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars
+        return my_vars(player.group.mode)
 
 
 class ResultsWaitDictator(WaitPage):
@@ -219,8 +229,8 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults]
+# page_sequence = [Voting, ResultsWaitVoting, VotingResults]
 
 
-# page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-#                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
