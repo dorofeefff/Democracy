@@ -1,29 +1,59 @@
 {{ block content }}
-<h2 id="part">Part I</h2>
-<h5 id="round"></h5>
+<style>
+    th, td {
+        padding: 15px;
+        border: 1px solid #ccc;
+    }
+    table {border: 1px solid #ccc}
+</style>
+<h2 id="part">Part II</h2>
 <h6>Results</h6>
 <hr>
 &nbsp;
 
-    {{ next_button }}
+<table>
+    <tr id="rounds">
+        <td>Round</td>
+    </tr>
+    <tr id="roles">
+        <td>Your role</td>
+    </tr>
+    <tr id="sends">
+        <td>Individual A allocated to Individual B</td>
+    </tr>
+    <tr id="guesses">
+        <td>Your guess, if Individual C</td>
+    </tr>
+    <tr id="payoffs">
+        <td>Your payoff</td>
+    </tr>
+</table>
+&nbsp;
 
-<p id="container"></p>
+{{ next_button }}
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
-    function make(tag, content) {
-        const el = document.createElement(tag);
-        content.forEach(c => el.appendChild(c));
-        return el;
+
+    let roles = {{ roles }};
+    let payoffs = {{ payoffs }};
+    let sends = {{ sends }};
+    let guesses = {{ guesses }};
+
+    function make(parent, child) {
+        const el = document.createElement("td");
+        const textEl = document.createTextNode(child);
+        el.appendChild(textEl);
+        document.getElementById(parent).appendChild(el)
     }
 
-    document.getElementById("container").appendChild(make(
-        "table", [...Array({{ C.NUM_ROUNDS }}).keys()].map(row => make(
-            "tr", [...Array(22).keys()].map(column => make(
-                "td", [document.createTextNode(row + 1)]
-            ))
-        ))
-    ));
+    for (let i = 1; i <= {{ C.NUM_ROUNDS }} - 1; i++) {
+        make("rounds", i);
+        make("roles", roles[i]);
+        make("payoffs", payoffs[i]);
+        make("sends", sends[i]);
+        make("guesses", guesses[i]);
+    }
 
 </script>
 {{ endblock }}

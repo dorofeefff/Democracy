@@ -11,7 +11,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'dem'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 3
     # Initial amount allocated to the dictator
     ENDOWMENT = cu(1000)
     # The bonus that the guesser gets if correct
@@ -210,6 +210,10 @@ class ResultsWaitDictator(WaitPage):
 
 class DictatorResults(Page):
     @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+    @staticmethod
     def vars_for_template(player):
         return dict(
             keep=player.group.keep,
@@ -222,7 +226,27 @@ class DictatorResults(Page):
 
 
 class DictatorAllResults(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == C.NUM_ROUNDS
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        p = player.in_all_rounds()
+        r = [p[i].role for i in range(len(p))]
+        f = [p[i].payoff.__int__() for i in range(len(p))]
+        s = [p[i].group.send.__int__() for i in range(len(p))]
+        g = ['' for i in range(len(p))]
+        for i in range(len(p)):
+            if p[i].role == 'Individual C':
+                g[i] = p[i].group.guess.__int__()
+        return dict(
+            sends=s,
+            roles=r,
+            payoffs=f,
+            player=p[0].role,
+            guesses=g,
+        )
 
 
 class Feedback(Page):
@@ -234,8 +258,8 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-page_sequence = [DictatorAllResults, Voting, ResultsWaitVoting, VotingResults]
+#page_sequence = [, Voting, ResultsWaitVoting, VotingResults]
 
 
-#page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-#                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, DictatorAllResults, Feedback]
