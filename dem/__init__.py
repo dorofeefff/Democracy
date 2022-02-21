@@ -108,7 +108,7 @@ class Voting(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars
+        return my_vars(player.group.mode)
 
 
 class ResultsWaitVoting(WaitPage):

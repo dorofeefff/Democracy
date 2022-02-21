@@ -14,7 +14,7 @@
     <input type="range"
            name="guess"
            id="guess_slider"
-           min="1" max={{ endowment }} step="1"
+           min={{ low_bound }} max={{ up_bound }} step="1"
            value="0"
            class="form-range">
 </div>
@@ -28,27 +28,19 @@
     // Put correct part and round numbers to the heading
     setPartAndRound({{ group.round_number }}, 'Decision')
 
-    // Set the choice set
-    let lowBound = setLowBound({{ send_min }}, {{ send_selfish }}, {{ group.mode }});
-    let upBound = setUpperBound({{ send_max }}, {{ send_fair }}, {{ group.mode }});
-
     // Message that the user sees based on their choice
     function messageToGuesser(v) {
         document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString();
     }
 
     // Set the default value for the slider and the default message
-    guessDefault = ({{ send_min }} + {{ send_max }}) / 2;
+    guessDefault = ({{ low_bound }} + {{ up_bound }}) / 2;
     let guessSlider = document.getElementById("guess_slider");
     guessSlider.value = guessDefault
     messageToGuesser(guessDefault)
 
     // The slider's behavior
-    guessSlider.oninput = function() {
-        if (this.value < lowBound) {this.value = lowBound}
-        if (this.value > upBound) {this.value = upBound}
-        messageToGuesser(this.value);
-    }
+    guessSlider.oninput = function() {messageToGuesser(this.value)}
 </script>
 
 {{ endblock }}
