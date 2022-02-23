@@ -8,6 +8,8 @@ function getPart(r) {
     else {return 'Part II'}
 }
 
+function getPartRound(r) {return getPart(r) + ': ' + getRound(r)}
+
 function getStage(r, stage) {return stage + ' Stage'}
 
 function setPartAndRound(r, stage) {
@@ -16,7 +18,7 @@ function setPartAndRound(r, stage) {
     if (r == 1) {
         docPart.innerHTML = getPart(r);
     } else {
-        docPart.innerHTML = getPart(r) + ': ' + getRound(r);
+        docPart.innerHTML = getPartRound(r);
         docStage.innerHTML = stage;
     }
 }

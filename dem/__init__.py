@@ -248,8 +248,8 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults]
+#page_sequence = [Voting, ResultsWaitVoting, VotingResults]
 
 
-#page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-#                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]

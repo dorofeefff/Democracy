@@ -1,23 +1,26 @@
 {{ extends 'otree/WaitPage.html' }}
 {{ block content }}
-<h2 id="part">Part I</h2>
+<h2 id="part"></h2>
 <h5 id="stage"></h5>
 <hr>
 &nbsp;
 
-    <p>
-        You are {{ role }}.
-    </p>
-
+<p>You are {{ role }}.</p>
+<p id="end"></p>
+<p>Please wait for other participants.</p>
+<script src="{{ static 'someScripts.js' }}"></script>
 <script>
-    if ({{ group.round_number }} > 1) {
-        // Put the number of the part in the title
-        document.getElementById("part").innerHTML = "Part II";
+    // Put correct part and round numbers to the heading
+    document.getElementById('part').innerHTML = getPartRound({{ group.round_number }});
 
-        // Put the number of the round in the title
+    let endMessage = document.getElementById("end");
+    if ({{ group.round_number }} == 1) {
+        endMessage.innerHTML = "This is the end of Part I."
+    }
+    else {
         let roundNum = {{ group.round_number }} - 1;
         let roundStr = roundNum.toString();
-        document.getElementById("round").innerHTML = "Round " + roundStr + ": Decision Stage";
+        endMessage.innerHTML = "This is the end of Round " + roundStr;
     }
 </script>
 {{ endblock }}
