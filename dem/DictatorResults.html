@@ -1,30 +1,71 @@
 {{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+        border: 1px solid #ccc;
+    }
+    table {
+        border: 1px solid #ccc;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
 <h2 id="part">Part I</h2>
 <h5 id="round"></h5>
 <h6>Results</h6>
 <hr>
 &nbsp;
 
-    <div id="message">wtf</div>
+<table id="table">
+    <tr id="rounds">
+        <td><i>Rounds</i></td>
+    </tr>
+    <tr id="roles">
+        <td><i>Your role</i></td>
+    </tr>
+    <tr id="sends">
+        <td><i>Individual A allocated to Individual B</i></td>
+    </tr>
+    <tr id="guesses">
+        <td><i>Your guess, if Individual C</i></td>
+    </tr>
+    <tr id="payoffs">
+        <td><i>Your payoff</i></td>
+    </tr>
+</table>
+&nbsp;
 
-    {{ next_button }}
+{{ next_button }}
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Decision')
+    setPartAndRound({{ group.round_number }}, 'Decision');
+    document.getElementById("round").style.display = "none";
 
-    // Information that the three players see
-    let playerType = "{{ player.role }}";
-    if (playerType == "{{ sender }}") {
-        document.getElementById("message").innerHTML =
-            'You decided to allocate <strong> {{ send }} </strong> to {{ C.RECEIVER_ROLE }} and to keep <strong> {{ keep }} </strong> to yourself.'
-    } else if (playerType == "{{ receiver }}") {
-       document.getElementById('message').innerHTML =
-           '{{ C.SENDER_ROLE }} decided to allocate <strong>{{ send }}</strong> to you and keep <strong>{{ keep }}</strong> for themselves.';
-    } else {
-        document.getElementById('message').innerHTML =
-            '{{ C.SENDER_ROLE }} decided to allocate <strong>{{ send }}</strong> to {{ C.RECEIVER_ROLE }}. Your guess was <strong>{{ guess }}</strong>. Your payoff in this round is {{ player.payoff }}'
+    let roles = {{ roles }};
+    let payoffs = {{ payoffs }};
+    let sends = {{ sends }};
+    let guesses = {{ guesses }};
+    let n = roles.length;
+
+    function make(parent, child) {
+        const el = document.createElement("td");
+        const textEl = document.createTextNode(child);
+        el.appendChild(textEl);
+        document.getElementById(parent).appendChild(el)
+    }
+
+    for (let i = 0; i <= n-1; i++) {
+        make("rounds", i+1);
+        make("roles", roles[i]);
+        make("payoffs", payoffs[i]);
+        make("sends", sends[i]);
+        make("guesses", guesses[i]);
+    }
+
+    if ({{ group.round_number }} == 1) {
+        document.getElementById("rounds").style.display = "none"
     }
 </script>
 {{ endblock }}

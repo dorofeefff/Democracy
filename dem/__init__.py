@@ -215,28 +215,15 @@ class ResultsWaitDictator(WaitPage):
 class DictatorResults(Page):
     @staticmethod
     def is_displayed(player):
-        return player.round_number == 1
-
-    @staticmethod
-    def vars_for_template(player):
-        return dict(
-            keep=player.group.keep,
-            send=player.group.send,
-            guess=player.group.guess,
-            sender=C.SENDER_ROLE,
-            receiver=C.RECEIVER_ROLE,
-            guesser=C.GUESSER_ROLE
-        )
-
-
-class DictatorAllResults(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS
+        return (player.round_number == C.NUM_ROUNDS) or (player.round_number == 1)
 
     @staticmethod
     def vars_for_template(player: Player):
-        p = player.in_all_rounds()
+        if player.round_number == 1:
+            n = 0
+        else:
+            n = 1
+        p = player.in_all_rounds()[n:]
         r = [p[i].role for i in range(len(p))]
         f = [p[i].payoff.__int__() for i in range(len(p))]
         s = [p[i].group.send.__int__() for i in range(len(p))]
@@ -248,7 +235,6 @@ class DictatorAllResults(Page):
             sends=s,
             roles=r,
             payoffs=f,
-            player=p[0].role,
             guesses=g,
         )
 
@@ -266,4 +252,4 @@ class Feedback(Page):
 
 
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults, DictatorAllResults, Feedback]
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
