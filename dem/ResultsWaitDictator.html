@@ -11,7 +11,7 @@
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    document.getElementById('part').innerHTML = getPartRound({{ group.round_number }});
+    setPartAndRound({{ group.round_number }}, '');
 
     let endMessage = document.getElementById("end");
     if ({{ group.round_number }} == 1) {

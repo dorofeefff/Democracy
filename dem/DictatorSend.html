@@ -6,7 +6,9 @@
 
 <p>You are <b>Individual A</b>.</p>
 
-<p>By moving the slider, choose how many of the {{ C.ENDOWMENT }} you will allocate to Individual B.</p>
+<p>Choose how many of the {{ C.ENDOWMENT }} you will allocate to Individual B.</p>
+
+<p id="b_vote"></p>
 
 <p>You can choose any number of points between {{ low_bound }} and {{ up_bound }}.</p>
 
@@ -30,6 +32,11 @@
 <script>
     // Put correct part and round numbers to the heading
     setPartAndRound({{ group.round_number }}, 'Decision Stage')
+
+    // Reveal the vote of Individual B if necessary
+    if ("{{ reveal_votes }}" == "True") {
+        document.getElementById("b_vote").innerHTML = 'Individual B voted for ' + "{{ b_vote }}" + ' in the last Voting Stage.'
+    }
 
     // Message that the user will see based on their choice
     function messageToSender(v) {

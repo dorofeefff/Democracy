@@ -31,7 +31,7 @@ class C(BaseConstants):
 
 
 # Useful variables for the dictator stage
-def my_vars(mode):
+def my_vars(player):
     mv = dict(
         endowment=C.ENDOWMENT.__int__(),
         error=C.ERROR.__int__(),
@@ -41,15 +41,20 @@ def my_vars(mode):
         send_fair=C.FAIR_SEND.__int__(),
         send_selfish=C.SELFISH_SEND.__int__(),
         low_bound=C.DEFAULT_SEND_MIN.__int__(),
-        up_bound=C.DEFAULT_SEND_MAX.__int__()
+        up_bound=C.DEFAULT_SEND_MAX.__int__(),
+        reveal_votes=player.session.config['votes_revealed'] and (player.round_number > 1),
+        b_vote=''
     )
 
-    if mode == '"fair"':
+    if player.group.mode == '"fair"':
         mv['up_bound']=C.FAIR_SEND.__int__()
-    elif mode == '"selfish"':
+    elif player.group.mode == '"selfish"':
         mv['low_bound']=C.SELFISH_SEND.__int__()
-
     return mv
+
+
+translate = {0: "Modification 1", 1: "Modification 2", 2: "Tie"}
+override_translate = {True: 'Not Considered', False: 'Considered'}
 
 
 class Subsession(BaseSubsession):
@@ -112,7 +117,7 @@ class Voting(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars(player.group.mode)
+        return my_vars(player)
 
 
 class ResultsWaitVoting(WaitPage):
@@ -161,8 +166,6 @@ class VotingResults(Page):
 
     @staticmethod
     def vars_for_template(player):
-        translate = {0: "Modification 1", 1: "Modification 2", 2: "Tie"}
-        override_translate = {True: 'Not Considered', False: 'Considered'}
         return dict(
             selfish_vote=player.group.sum_vote,
             fair_vote=C.PLAYERS_PER_GROUP - player.group.sum_vote,
@@ -182,7 +185,10 @@ class DictatorSend(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars(player.group.mode)
+        mv = my_vars(player)
+        if mv['reveal_votes'] == True:
+            mv['b_vote'] = translate[player.group.get_player_by_role(C.RECEIVER_ROLE).vote]
+        return mv
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -200,7 +206,7 @@ class DictatorGuess(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return my_vars(player.group.mode)
+        return my_vars(player)
 
 
 class ResultsWaitDictator(WaitPage):
