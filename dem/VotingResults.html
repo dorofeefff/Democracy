@@ -13,8 +13,7 @@
     }
 </style>
 <h2 id="part">Part I</h2>
-<h5 id="round"></h5>
-<h6>Results</h6>
+<h5 id="stage">Voting Stage Results</h5>
 <hr>
 &nbsp;
 
@@ -49,7 +48,7 @@
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Voting')
+    setPartAndRound({{ group.round_number }}, 'Voting Stage Results')
 
     // Put background color to the overriding cell and show/hide computer decision line
     if ("{{ overridden }}" == 'Considered') {

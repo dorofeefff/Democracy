@@ -1,15 +1,17 @@
 {{ block content }}
 
 <h2 id="part"></h2>
-<h5 id="round"></h5>
+<h5 id="stage"></h5>
 <hr>
 &nbsp;
 
-<p>
-    You are <b>Individual A</b>.
-    Please decide how many of the {{ C.ENDOWMENT }}
-    you will allocate to Individual B.
-</p>
+<p>You are <b>Individual A</b>.</p>
+
+<p>By moving the slider, choose how many of the {{ C.ENDOWMENT }} you will allocate to Individual B.</p>
+
+<p>You can choose any number of points between {{ low_bound }} and {{ up_bound }}.</p>
+
+&nbsp;
 
 <div class="input-group">
     <input type="range"
@@ -23,27 +25,32 @@
 <p id="send_choice"></p>
 <p id="keep_choice"></p>
 
-<button class="otree-btn-next btn btn-primary">Submit</button>
+<button id="next_button" class="otree-btn-next btn btn-primary">Submit</button>
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Decision')
+    setPartAndRound({{ group.round_number }}, 'Decision Stage')
 
     // Message that the user will see based on their choice
     function messageToSender(v) {
-        document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString();
-        document.getElementById("keep_choice").innerHTML = "You keep for yourself: " + ({{ endowment }} - v).toString();
+        document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString() + " points.";
+        document.getElementById("keep_choice").innerHTML = "You keep for yourself: " + ({{ C.ENDOWMENT.__int__() }} - v).toString() + " points.";
     }
 
     // Set the default value for the slider and the default message
-    sendDefault = ({{ low_bound }} + {{ up_bound }}) / 2;
+    sendDefault = {{ low_bound }} + Math.floor(Math.random() * ({{ up_bound }} - {{ low_bound }}));
     let sendSlider = document.getElementById("send_slider");
     sendSlider.value = (sendDefault);
-    messageToSender(sendDefault)
+
+    // Hide next button until slider is moved
+    document.getElementById("next_button").style.display = "none";
 
     // Behavior of the slider
-    sendSlider.oninput = function() {messageToSender(this.value)}
+    sendSlider.oninput = function() {
+        messageToSender(this.value)
+        document.getElementById("next_button").style.display = "";
+    }
 </script>
 {{ endblock }}
 

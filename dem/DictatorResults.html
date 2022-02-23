@@ -11,7 +11,6 @@
     }
 </style>
 <h2 id="part">Part I</h2>
-<h5 id="round"></h5>
 <h6>Results</h6>
 <hr>
 &nbsp;
@@ -40,8 +39,7 @@
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Decision');
-    document.getElementById("round").style.display = "none";
+    document.getElementById('part').innerHTML = getPart({{ group.round_number }});
 
     let roles = {{ roles }};
     let payoffs = {{ payoffs }};

@@ -1,14 +1,16 @@
 {{ block content }}
-<h2 id="part">Part I</h2>
-<h5 id="round"></h5>
+<h2 id="part"></h2>
+<h5 id="stage"></h5>
 <hr>
 &nbsp;
 
-<p>
-    You are <b>Individual C</b>.
-    Please guess how many points out of {{ C.ENDOWMENT }}
-    Individual A will allocate to Individual B.
-</p>
+<p>You are <b>Individual C</b>.</p>
+
+<p>By moving the slider, guess how many points out of {{ C.ENDOWMENT.__int__() }} Individual A will allocate to Individual B.</p>
+
+<p>Individual A can choose any number of points between {{ low_bound }} and {{ up_bound }}.</p>
+
+&nbsp;
 
 <div class="input-group">
     <input type="range"
@@ -19,33 +21,38 @@
            class="form-range">
 </div>
 
-<p id="guess_choice"></p>
+<p id="guess_choice"> </p>
 
-<p id="second_message"></p>
+<p id="second_message"> </p>
 
-    {{ next_button }}
+<button id="next_button" class="otree-btn-next btn btn-primary">Submit</button>
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Decision')
+    setPartAndRound({{ group.round_number }}, 'Decision Stage')
 
     // Message that the user sees based on their choice
     function messageToGuesser(v) {
-        document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString() + ".";
+        document.getElementById("guess_choice").innerHTML = "Your guess: " + v.toString() + " points.";
         const v1 = Math.max(v - {{ error }}, {{ low_bound }});
         const v2 = Math.min(parseInt(v) + parseInt({{ error }}), {{ up_bound }});
-        document.getElementById("second_message").innerHTML = "You will get " + "{{ bonus }}" + " if Individual A's choice is between " + v1 + " and " + v2 + " points.";
+        document.getElementById("second_message").innerHTML = "You will get " + "{{ bonus }}" + " if Individual A's choice is between " + v1 + " and " + v2 + ".";
     }
 
     // Set the default value for the slider and the default message
-    guessDefault = ({{ low_bound }} + {{ up_bound }}) / 2;
+    guessDefault = {{ low_bound }} + Math.floor(Math.random() * ({{ up_bound }} - {{ low_bound }}));
     let guessSlider = document.getElementById("guess_slider");
     guessSlider.value = guessDefault
-    messageToGuesser(guessDefault)
+
+    // Hide next button until slider is moved
+    document.getElementById("next_button").style.display = "none";
 
     // The slider's behavior
-    guessSlider.oninput = function() {messageToGuesser(this.value)}
+    guessSlider.oninput = function() {
+        messageToGuesser(this.value);
+        document.getElementById("next_button").style.display = "";
+    }
 </script>
 
 {{ endblock }}

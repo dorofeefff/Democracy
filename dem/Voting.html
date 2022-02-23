@@ -6,8 +6,8 @@ th, td {
 .border-r {border: 1px solid #ccc; border-width: 0 1px 0 0;}
 </style>
 
-<h2 id="part">Part I</h2>
-<h5 id="round"></h5>
+<h2 id="part"></h2>
+<h5 id="stage">Voting Stage</h5>
 <hr>
 &nbsp;
 <p>Please choose one of the two Modifications by pressing a corresponding button below.</p>
@@ -29,6 +29,6 @@ th, td {
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
-    setPartAndRound({{ group.round_number }}, 'Voting')
+    setPartAndRound({{ group.round_number }}, 'Voting Stage')
 </script>
 {{ endblock }}

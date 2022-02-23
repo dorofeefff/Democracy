@@ -36,17 +36,13 @@ def my_vars(mode):
         endowment=C.ENDOWMENT.__int__(),
         error=C.ERROR.__int__(),
         bonus=C.GUESSER_BONUS,
-        send_min=C.DEFAULT_SEND_MIN.__int__(),
-        send_max=C.DEFAULT_SEND_MAX.__int__(),
-        send_fair=C.FAIR_SEND.__int__(),
-        send_selfish=C.SELFISH_SEND.__int__(),
         low_bound=C.DEFAULT_SEND_MIN.__int__(),
         up_bound=C.DEFAULT_SEND_MAX.__int__()
     )
 
-    if mode == 'fair':
+    if mode == '"fair"':
         mv['up_bound']=C.FAIR_SEND.__int__()
-    elif mode == 'selfish':
+    elif mode == '"selfish"':
         mv['low_bound']=C.SELFISH_SEND.__int__()
 
     return mv
