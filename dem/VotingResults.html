@@ -5,12 +5,19 @@
         border: 1px solid #ccc;
     }
     table {border: 1px solid #ccc}
-    .bgr {background-color: indianred}
-    .bgg {background-color: lightgreen}
-    .nvotes {
-        text-align: right;
-        font-size: small;
+    .bgr {
+        text-align: center;
+        background-color: indianred
     }
+    .bgg {
+        text-align: center;
+        background-color: lightgreen
+    }
+    .bgy {
+        text-align: center;
+        background-color: yellow;
+    }
+    .centered {text-align: center}
 </style>
 <h2 id="part">Part I</h2>
 <h5 id="stage">Voting Stage Results</h5>
@@ -19,24 +26,28 @@
 
 <table>
     <tr>
+        <td></td>
+        <td><b>Modification 1</b></td>
+        <td><b>Modification 2</b></td>
+        <!--<td><b>{{ group_vote }}</b></td>-->
+    </tr>
+    <tr>
+        <td>Number of votes</td>
+        <td class="centered">{{ fair_vote }}</td>
+        <td class="centered">{{ selfish_vote }}</td>
+    </tr>
+    <tr>
         <td>Majority choice</td>
-        <td><b>{{ group_vote }}</b></td>
+        <td id="m1" class="centered"></td>
+        <td id="m2" class="centered"></td>
     </tr>
     <tr>
-        <td class="nvotes">- votes for Modification 1</td>
-        <td class="nvotes">{{ fair_vote }}</td>
-    </tr>
-    <tr>
-        <td class="nvotes">- votes for Modification 2</td>
-        <td class="nvotes">{{ selfish_vote }}</td>
-    </tr>
-    <tr>
-        <td>Your votes were</td>
-        <td class="" id="overridden"><b>{{ overridden }}</b></td>
+        <td id="overridden" colspan="3" style="text-align: center">Your votes were <b>{{ overridden }}</b></td>
     </tr>
     <tr id="computerChoice">
         <td>The computer randomly chose</td>
-        <td><b>{{ final }}</b></td>
+        <td id="cm1" class="centered"></td>
+        <td id="cm2" class="centered"></td>
     </tr>
 </table>
 &nbsp;
@@ -50,6 +61,11 @@
     // Put correct part and round numbers to the heading
     setPartAndRound({{ group.round_number }}, 'Voting Stage Results')
 
+    // Put checkbox to the majority choice box
+    if ('{{ group_vote }}' == 'Modification 1') {majChoice = document.getElementById("m1")}
+    else {majChoice = document.getElementById("m2")}
+    majChoice.innerHTML = '&#10004;';
+
     // Put background color to the overriding cell and show/hide computer decision line
     if ("{{ overridden }}" == 'Considered') {
         document.getElementById('overridden').className='bgg'
@@ -58,6 +74,11 @@
     else {
         document.getElementById('overridden').className='bgr'
         document.getElementById('computerChoice').style.display=''
+
+        // Put checkbox to the computer's choice
+        if ('{{ final }}' == 'Modification 1') {comChoice = document.getElementById("cm1")}
+        else {comChoice = document.getElementById("cm2")}
+        comChoice.innerHTML = '&#10004;';
     }
 </script>
 {{ endblock }}

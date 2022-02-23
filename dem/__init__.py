@@ -36,6 +36,10 @@ def my_vars(mode):
         endowment=C.ENDOWMENT.__int__(),
         error=C.ERROR.__int__(),
         bonus=C.GUESSER_BONUS,
+        send_min=C.DEFAULT_SEND_MIN.__int__(),
+        send_max=C.DEFAULT_SEND_MAX.__int__(),
+        send_fair=C.FAIR_SEND.__int__(),
+        send_selfish=C.SELFISH_SEND.__int__(),
         low_bound=C.DEFAULT_SEND_MIN.__int__(),
         up_bound=C.DEFAULT_SEND_MAX.__int__()
     )
@@ -244,8 +248,8 @@ class Feedback(Page):
         return player.round_number == C.NUM_ROUNDS
 
 
-#page_sequence = [, Voting, ResultsWaitVoting, VotingResults]
+page_sequence = [Voting, ResultsWaitVoting, VotingResults]
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+#page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+#                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
