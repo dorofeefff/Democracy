@@ -245,6 +245,13 @@ class DictatorResults(Page):
         )
 
 
+class WaitBetweenParts(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
 class Feedback(Page):
     form_model = "player"
     form_fields = ["feedback"]
@@ -258,4 +265,5 @@ class Feedback(Page):
 
 
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults, Feedback]
+                 DictatorGuess, ResultsWaitDictator, DictatorResults,
+                 WaitBetweenParts, Feedback]
