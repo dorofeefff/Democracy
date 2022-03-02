@@ -1,0 +1,26 @@
+{{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+    }
+    .border-r {border: 1px solid #ccc; border-width: 0 1px 0 0;}
+</style>
+<h2>Comprehension Question 1</h2>
+<hr>
+&nbsp;
+<p style="text-align: center">Do the votes of your group always determine which Modification is implemented at the Decision Stage?</p>
+
+<table style="width:100%">
+    <tr>
+        <td class="border-r" style="text-align:center"><button id="yes" type="button" onclick="clickWrong('yes')">Yes</button></td>
+        <td style="text-align:center"><button id="no" type="button" onclick="clickRight('no')">No</button></td>
+    </tr>
+</table>
+&nbsp;
+<p id="answer" style="display: none">No. If the computer chooses not to consider the votes, it selects the Modification randomly.</p>
+
+&nbsp;
+
+<button id="next_button" class="otree-btn-next btn btn-primary" style="display: none">Next</button>
+<script src="{{ static 'someScripts.js' }}"></script>
+{{ endblock }}

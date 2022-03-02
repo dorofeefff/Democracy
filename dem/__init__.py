@@ -252,6 +252,34 @@ class WaitBetweenParts(Page):
         return player.round_number == 1
 
 
+class Comprehension1(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
+class Comprehension2(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
+class Comprehension3(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
+class Comprehension4(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
 class Feedback(Page):
     form_model = "player"
     form_fields = ["feedback"]
@@ -265,5 +293,6 @@ class Feedback(Page):
 
 
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults,
-                 WaitBetweenParts, Feedback]
+                 DictatorGuess, ResultsWaitDictator, DictatorResults, WaitBetweenParts,
+                 Comprehension1, Comprehension2, Comprehension3, Comprehension4,
+                 Feedback]

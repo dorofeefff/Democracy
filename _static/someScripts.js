@@ -22,3 +22,16 @@ function setPartAndRound(r, stage) {
         docStage.innerHTML = stage;
     }
 }
+
+function clickWrong(id) {
+    document.getElementById(id).style.background = "red";
+    document.getElementById("answer").style.display = "";
+    document.getElementById("answer").style.color = "red";
+    document.getElementById("next_button").style.display = "";
+}
+function clickRight(id) {
+    document.getElementById(id).style.background = "green";
+    document.getElementById("answer").style.display = "";
+    document.getElementById("answer").style.color = "green";
+    document.getElementById("next_button").style.display = "";
+}
