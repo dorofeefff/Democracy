@@ -31,8 +31,7 @@ class Player(BasePlayer):
 class PaymentInfo(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        participant = player.participant
-        return dict(redemption_code=participant.label or participant.code)
+        return dict(final_payoff=player.participant.payoff_plus_participation_fee)
 
 
 page_sequence = [PaymentInfo]
