@@ -264,6 +264,21 @@ class Player(BasePlayer):
             ["Other / Country not listed", "Other / Country not listed"],
     ],
     )
+    exit1 = models.LongStringField(
+        label='If you ever were Individual A, why did you choose to allocate the specific amount to Individual B?'
+    )
+    exit2 = models.LongStringField(
+        label='If you ever were Individual C, what influenced your guess?'
+    )
+    exit3 = models.LongStringField(
+        label='Why did you vote for Modifications 1 or 2?'
+    )
+    exit4 = models.LongStringField(
+        label='If your vote was ever overridden, how did this affect your behavior?'
+    )
+    exit5 = models.LongStringField(
+        label='Did your behavior change when the same Modification was selected by voting as opposed to randomly selected after votes were overridden?'
+    )
 
 
 # FUNCTIONS
@@ -273,4 +288,9 @@ class Demographics(Page):
     form_fields = ['sex', 'ethnicity', 'age', 'major', 'country_of_birth']
 
 
-page_sequence = [Demographics]
+class ExitSurvey(Page):
+    form_model = 'player'
+    form_fields = ['exit1', 'exit2', 'exit3', 'exit4', 'exit5']
+
+
+page_sequence = [ExitSurvey, Demographics]

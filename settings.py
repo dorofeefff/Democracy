@@ -5,7 +5,9 @@ SESSION_CONFIGS = [
     dict(
         name='dem',
         display_name="Democracy",
-        app_sequence=['dem', 'dem_survey', 'payment_info'],
+        app_sequence=[
+            #'dem',
+            'dem_survey', 'payment_info'],
         num_demo_participants=3,
         use_browser_bots=False,
         votes_revealed=True,
@@ -34,11 +36,9 @@ USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='econ101',
-        display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
-    ),
-    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
+        name='cess',
+        display_name='CESS',
+    )
 ]
 
 ADMIN_USERNAME = 'admin'
