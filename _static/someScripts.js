@@ -28,10 +28,14 @@ function clickWrong(id) {
     document.getElementById("answer").style.display = "";
     document.getElementById("answer").style.color = "red";
     document.getElementById("next_button").style.display = "";
+    if (id == "yes") {document.getElementById("no").style.background="#cccccc"}
+    else {document.getElementById("yes").style.background="#cccccc"}
 }
 function clickRight(id) {
     document.getElementById(id).style.background = "green";
     document.getElementById("answer").style.display = "";
     document.getElementById("answer").style.color = "green";
     document.getElementById("next_button").style.display = "";
+    if (id == "yes") {document.getElementById("no").style.background="#cccccc"}
+    else {document.getElementById("yes").style.background="#cccccc"}
 }
