@@ -54,7 +54,7 @@
 
 <p>Thus, the Modification that is selected for this round is <b>{{ final }}</b>.</p>
 
-{{ next_button }}
+<button id="next_button" class="btn-primary" style="display: none">Next</button>
 
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
@@ -79,6 +79,12 @@
         if ('{{ final }}' == 'Modification 1') {comChoice = document.getElementById("cm1")}
         else {comChoice = document.getElementById("cm2")}
         comChoice.innerHTML = '&#10004;';
+    }
+
+    // Show next button after 5 seconds
+    setTimeout(showNextButton, 5000);
+    function showNextButton() {
+        document.getElementById("next_button").style.display=""
     }
 </script>
 {{ endblock }}
