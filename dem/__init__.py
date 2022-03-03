@@ -11,7 +11,7 @@ Your app description
 class C(BaseConstants):
     NAME_IN_URL = 'dem'
     PLAYERS_PER_GROUP = 3
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 5
     # Initial amount allocated to the dictator
     ENDOWMENT = cu(1000)
     # The bonus that the guesser gets if correct
