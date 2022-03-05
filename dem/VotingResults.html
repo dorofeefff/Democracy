@@ -37,22 +37,22 @@
         <td class="centered">{{ selfish_vote }}</td>
     </tr>
     <tr>
-        <td>Majority choice</td>
+        <td>The majority choice</td>
         <td id="m1" class="centered"></td>
         <td id="m2" class="centered"></td>
     </tr>
-    <tr>
+    <tr id="overridden_all" style="display: none">
         <td id="overridden" colspan="3" style="text-align: center">Your votes were <b>{{ overridden }}</b></td>
     </tr>
-    <tr id="computerChoice">
-        <td>The computer randomly chose</td>
+    <tr id="computerChoice" style="display: none">
+        <td>Computer's choice</td>
         <td id="cm1" class="centered"></td>
         <td id="cm2" class="centered"></td>
     </tr>
 </table>
 &nbsp;
 
-<p>Thus, the Modification that is selected for this round is <b>{{ final }}</b>.</p>
+<p id="last_message" style="display: none">Thus, the Modification that is selected for this round is <b>{{ final }}</b>.</p>
 
 <button id="next_button" class="btn-primary" style="display: none">Next</button>
 
@@ -69,11 +69,9 @@
     // Put background color to the overriding cell and show/hide computer decision line
     if ("{{ overridden }}" == 'Considered') {
         document.getElementById('overridden').className='bgg'
-        document.getElementById('computerChoice').style.display='none'
     }
     else {
         document.getElementById('overridden').className='bgr'
-        document.getElementById('computerChoice').style.display=''
 
         // Put checkbox to the computer's choice
         if ('{{ final }}' == 'Modification 1') {comChoice = document.getElementById("cm1")}
@@ -82,9 +80,18 @@
     }
 
     // Show next button after 5 seconds
-    setTimeout(showNextButton, 5000);
-    function showNextButton() {
-        document.getElementById("next_button").style.display=""
+    let baseTimeout = 3500;
+    function showElement(elementId) {
+        document.getElementById(elementId).style.display=""
+    }
+    setTimeout(showElement, baseTimeout * 2, "overridden_all");
+    if ("{{ overridden }}" == 'Considered') {
+        setTimeout(showElement, baseTimeout * 3, "last_message");
+        setTimeout(showElement, baseTimeout * 4, "next_button");
+    } else {
+        setTimeout(showElement, baseTimeout * 3, "computerChoice");
+        setTimeout(showElement, baseTimeout * 4, "last_message");
+        setTimeout(showElement, baseTimeout * 5, "next_button");
     }
 </script>
 {{ endblock }}

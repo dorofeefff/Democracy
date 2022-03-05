@@ -22,8 +22,8 @@ class C(BaseConstants):
     DEFAULT_SEND_MIN = cu(200)
     DEFAULT_SEND_MAX = cu(300)
     # Allocations that are added, according to the two modifications
-    FAIR_SEND = cu(400)
-    SELFISH_SEND = cu(100)
+    FAIR_SEND = cu(500)
+    SELFISH_SEND = cu(0)
     # Roles
     SENDER_ROLE = 'Individual A'
     RECEIVER_ROLE = 'Individual B'
