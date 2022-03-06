@@ -27,6 +27,8 @@
 
 <button id="next_button" class="otree-btn-next btn btn-primary">Submit</button>
 
+<input type="hidden" name="guesser_slider_default" id="slider_default" />
+
 <script src="{{ static 'someScripts.js' }}"></script>
 <script>
     // Put correct part and round numbers to the heading
@@ -42,6 +44,7 @@
 
     // Set the default value for the slider and the default message
     guessDefault = {{ low_bound }} + Math.floor(Math.random() * ({{ up_bound }} - {{ low_bound }}));
+    document.getElementById("slider_default").value = guessDefault;
     let guessSlider = document.getElementById("guess_slider");
     guessSlider.value = guessDefault
 

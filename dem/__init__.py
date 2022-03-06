@@ -76,7 +76,9 @@ class Group(BaseGroup):
     send = models.CurrencyField()
     keep = models.CurrencyField()
     guess = models.CurrencyField()
-
+    # Default position of the slider
+    sender_slider_default = models.IntegerField()
+    guesser_slider_default = models.IntegerField()
 
 class Player(BasePlayer):
     # Voting stage
@@ -177,7 +179,7 @@ class VotingResults(Page):
 
 class DictatorSend(Page):
     form_model = 'group'
-    form_fields = ['send']
+    form_fields = ['send', 'sender_slider_default']
 
     @staticmethod
     def is_displayed(player):
@@ -202,7 +204,7 @@ class DictatorGuess(Page):
         return player.role == C.GUESSER_ROLE
 
     form_model = 'group'
-    form_fields = ['guess']
+    form_fields = ['guess', 'guesser_slider_default']
 
     @staticmethod
     def vars_for_template(player):
