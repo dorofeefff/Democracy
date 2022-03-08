@@ -17,7 +17,7 @@ class C(BaseConstants):
     # The bonus that the guesser gets if correct
     GUESSER_BONUS = cu(500)
     # Error that is allowed to the guesser
-    ERROR = cu(10)
+    ERROR = cu(20)
     # Default choice set
     DEFAULT_SEND_MIN = cu(200)
     DEFAULT_SEND_MAX = cu(300)
