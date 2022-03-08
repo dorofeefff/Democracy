@@ -5,7 +5,11 @@ SESSION_CONFIGS = [
     dict(
         name='dem',
         display_name="Democracy",
-        app_sequence=['dem', 'dem_survey', 'payment_info'],
+        app_sequence=[
+            'dem',
+            'dem_survey',
+            'payment_info'
+],
         num_demo_participants=3,
         use_browser_bots=False,
         votes_revealed=True,

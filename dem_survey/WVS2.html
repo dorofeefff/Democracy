@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Survey{% endblock %}
+{% block content %}
+<hr>
+&nbsp;
+<h6>For each of the following political systems, would you say it is a very good, fairly good, fairly bad or very bad way of governing this country?</h6>
+<ul>
+    <li>{{ formfield 'wvs_235' }}</li>
+    <li>{{ formfield 'wvs_236' }}</li>
+    <li>{{ formfield 'wvs_238' }}</li>
+</ul>
+&nbsp;
+<h6>{{ formfield 'wvs_250' }}</h6>
+&nbsp;
+{% next_button %}
+
+{% endblock %}

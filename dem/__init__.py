@@ -86,8 +86,6 @@ class Player(BasePlayer):
         label="What do you want?",
         choices=[[0, "Modification 1"], [1, "Modification 2"]]
     )
-    # Feedback
-    feedback = models.LongStringField()
 
 
 # FUNCTIONS
@@ -282,19 +280,6 @@ class Comprehension4(Page):
         return player.round_number == 1
 
 
-class Feedback(Page):
-    form_model = "player"
-    form_fields = ["feedback"]
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == C.NUM_ROUNDS
-
-
-#page_sequence = [Voting, ResultsWaitVoting, VotingResults]
-
-
 page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
                  DictatorGuess, ResultsWaitDictator, DictatorResults, WaitBetweenParts,
-                 Comprehension1, Comprehension2, Comprehension3, Comprehension4,
-                 Feedback]
+                 Comprehension1, Comprehension2, Comprehension3, Comprehension4]

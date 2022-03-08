@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Survey{% endblock %}
+{% block content %}
+<hr>
+&nbsp;
+<h6>How much confidence you have in the following organizations?</h6>
+<ul>
+    <li>{{ formfield 'wvs_66' }}</li>
+    <li>{{ formfield 'wvs_69' }}</li>
+    <li>{{ formfield 'wvs_71' }}</li>
+</ul>
+&nbsp;
+<h6>Do you agree with the following statements?</h6>
+<ul>
+    <li>{{ formfield 'wvs_110_1' }}</li>
+    <li>{{ formfield 'wvs_110_2' }}</li>
+</ul>
+&nbsp;
+<h6>{{ formfield 'wvs_48' }}</h6>
+&nbsp;
+{% next_button %}
+
+{% endblock %}

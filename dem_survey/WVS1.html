@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Survey{% endblock %}
+{% block content %}
+<hr>
+&nbsp;
+<h6>When elections take place, do you vote always, usually or never?</h6>
+<ul>
+    <li>{{ formfield 'wvs_221' }}</li>
+    <li>{{ formfield 'wvs_222' }}</li>
+</ul>
+&nbsp;
+<h6>In your view, how often do the following things occur in this country’s elections?</h6>
+<ul>
+    <li>{{ formfield 'wvs_224' }}</li>
+    <li>{{ formfield 'wvs_225' }}</li>
+    <li>{{ formfield 'wvs_230' }}</li>
+    <li>{{ formfield 'wvs_232' }}</li>
+</ul>
+&nbsp;
+<h6>{{ formfield 'wvs_234' }}</h6>
+&nbsp;
+{% next_button %}
+
+{% endblock %}
