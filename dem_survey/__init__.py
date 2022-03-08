@@ -1,10 +1,13 @@
 from otree.api import *
 
+c = Currency
 
-class Constants(BaseConstants):
-    name_in_url = 'survey'
-    players_per_group = None
-    num_rounds = 1
+class C(BaseConstants):
+    NAME_IN_URL = 'survey'
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 1
+    # Max amount to invest
+    MAX_INVESTMENT = cu(500)
 
 
 class Subsession(BaseSubsession):
@@ -16,6 +19,9 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    # Investment
+    inv_success = models.BooleanField()
+    investment = models.CurrencyField()
 
     # Demographics
     sex = models.StringField(
@@ -386,6 +392,12 @@ class Player(BasePlayer):
 
 
 # FUNCTIONS
+def creating_session(subsession):
+    import random
+    for player in subsession.get_players():
+        player.inv_success = random.choice([True, False])
+
+
 # PAGES
 class Demographics(Page):
     form_model = 'player'
@@ -412,4 +424,20 @@ class WVS3(Page):
     form_fields = ['wvs_48', 'wvs_110_1', 'wvs_110_2', 'wvs_66', 'wvs_69', 'wvs_71']
 
 
-page_sequence = [ExitSurvey, WVS1, WVS2, WVS3, Demographics]
+class Investment(Page):
+    form_model = 'player'
+    form_fields = ['investment']
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        if player.inv_success:
+            player.payoff = player.investment * 2.5
+        else:
+            player.payoff = -1 * player.investment
+
+
+class InvestmentResult(Page):
+    pass
+
+
+page_sequence = [ExitSurvey, WVS1, WVS2, WVS3, Investment, InvestmentResult, Demographics]

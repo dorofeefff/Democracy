@@ -1,0 +1,37 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Investment Task{% endblock %}
+{% block content %}
+    <hr>
+    &nbsp;
+    <p>At this page, you are able to choose a portion of the reward that you earned during the experiment
+        (but not more than {{ C.MAX_INVESTMENT }})
+        and invest it in a risky option.</p>
+    <p>If the investment is successful, you receive
+        2.5 times the amount you chose to invest; if the investment is unsuccessful, you lose the
+        amount invested. The probability that the investment is successful is 50% and, therefore, the
+        probability that the investment is unsuccessful is also 50%.</p>
+    <p>Please choose the amount you want to invest by moving the slider.</p>
+    <div class="input-group">
+        <input type="range"
+               name="investment"
+               id="inv_slider"
+               min=0 max={{ C.MAX_INVESTMENT.__int__() }} step="1"
+               value="0"
+               class="form-range">
+    </div>
+    <p id="invMessage"></p>
+    {% next_button %}
+    <script>
+    // Message that the user will see based on their choice
+    function investmentMessage(v) {
+        document.getElementById("invMessage").innerHTML = "Your chose to invest: " + v.toString() + " points.";
+    }
+    // Default message
+    investmentMessage(0);
+    // Behavior of the slider
+    document.getElementById("inv_slider").oninput = function() {
+        investmentMessage(this.value)
+    }
+    </script>
+{% endblock %}

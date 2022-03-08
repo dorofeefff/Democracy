@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Investment Task Result{% endblock %}
+{% block content %}
+    <hr>
+    &nbsp;
+
+    <p id="m1"></p>
+    <p id="m2"></p>
+
+    {% next_button %}
+
+    <script>
+    let gain = {{ player.investment.__int__() }} * 2.5;
+    let loss = {{ player.investment.__int__() }};
+    let m1 = document.getElementById("m1");
+    let m2 = document.getElementById("m2");
+    if ('{{ player.inv_success }}' == 'True') {
+        m1.innerHTML = 'Your investment was successful.';
+        m2.innerHTML = 'You gained ' + gain.toString() + ' points.';
+    } else {
+        m1.innerHTML = 'Your investment was unsuccessful.';
+        m2.innerHTML = 'You lost ' + loss.toString() + ' points.';
+    }
+    </script>
+{% endblock %}

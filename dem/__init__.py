@@ -80,6 +80,7 @@ class Group(BaseGroup):
     sender_slider_default = models.IntegerField()
     guesser_slider_default = models.IntegerField()
 
+
 class Player(BasePlayer):
     # Voting stage
     vote = models.IntegerField(
