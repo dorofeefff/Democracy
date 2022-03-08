@@ -440,4 +440,4 @@ class InvestmentResult(Page):
     pass
 
 
-page_sequence = [ExitSurvey, WVS1, WVS2, WVS3, Investment, InvestmentResult, Demographics]
+page_sequence = [ExitSurvey, Investment, InvestmentResult, WVS1, WVS2, WVS3, Demographics]
