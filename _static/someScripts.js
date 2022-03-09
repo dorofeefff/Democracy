@@ -24,18 +24,20 @@ function setPartAndRound(r, stage) {
 }
 
 function clickWrong(id) {
+    document.getElementById("comp_form").value = false;
     document.getElementById(id).style.background = "red";
     document.getElementById("answer").style.display = "";
     document.getElementById("answer").style.color = "red";
     document.getElementById("next_button").style.display = "";
-    if (id == "yes") {document.getElementById("no").style.background="#cccccc"}
-    else {document.getElementById("yes").style.background="#cccccc"}
+    if (id == "yes") {document.getElementById("no").disabled = true}
+    else {document.getElementById("yes").disabled = true};
 }
 function clickRight(id) {
+    document.getElementById("comp_form").value = true;
     document.getElementById(id).style.background = "green";
     document.getElementById("answer").style.display = "";
     document.getElementById("answer").style.color = "green";
     document.getElementById("next_button").style.display = "";
-    if (id == "yes") {document.getElementById("no").style.background="#cccccc"}
-    else {document.getElementById("yes").style.background="#cccccc"}
+    if (id == "yes") {document.getElementById("no").disabled = true}
+    else {document.getElementById("yes").disabled = true}
 }

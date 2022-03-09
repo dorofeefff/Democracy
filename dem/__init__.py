@@ -87,6 +87,11 @@ class Player(BasePlayer):
         label="What do you want?",
         choices=[[0, "Modification 1"], [1, "Modification 2"]]
     )
+    # Answers to comprehension questions
+    comp1 = models.BooleanField()
+    comp2 = models.BooleanField()
+    comp3 = models.BooleanField()
+    comp4 = models.BooleanField()
 
 
 # FUNCTIONS
@@ -254,6 +259,8 @@ class WaitBetweenParts(Page):
 
 
 class Comprehension1(Page):
+    form_model = 'player'
+    form_fields = ['comp1']
 
     @staticmethod
     def is_displayed(player):
@@ -261,6 +268,8 @@ class Comprehension1(Page):
 
 
 class Comprehension2(Page):
+    form_model = 'player'
+    form_fields = ['comp2']
 
     @staticmethod
     def is_displayed(player):
@@ -268,6 +277,8 @@ class Comprehension2(Page):
 
 
 class Comprehension3(Page):
+    form_model = 'player'
+    form_fields = ['comp3']
 
     @staticmethod
     def is_displayed(player):
@@ -275,6 +286,8 @@ class Comprehension3(Page):
 
 
 class Comprehension4(Page):
+    form_model = 'player'
+    form_fields = ['comp4']
 
     @staticmethod
     def is_displayed(player):
