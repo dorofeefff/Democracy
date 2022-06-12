@@ -2,7 +2,7 @@
 ### By [Sasha Dorofeev](https://sashadorofeev.net/), [Sam Kapon](https://samkapon.com/), and [Mauricio Ribeiro](https://sites.google.com/nyu.edu/mauricio-ribeiro) 
 #### Experimental Software
 
-This is the software that we used to run the experiment "Decomposing the Democracy Effect." This project explores how and why democratically chosen rules change people's behavior when they face social dilemmas. You can read more about the study at Sasha's [webpage](https://sashadorofeev.net/research).
+This is the software that we used to run the experiment "Decomposing the Democracy Effect." This project explores how and why democratically chosen rules change people's behavior when they face social dilemmas. You can read more about the study at Sasha's [webpage](https://sashadorofeev.net/research). The [instructions](https://sashadorofeev.net/assets/materials/democracy_instructions.pdf) for the experiment are also available online.
 
 You can run a demo of the experiment online using Heroku:
 1. Go to https://democracy-demo.herokuapp.com/
