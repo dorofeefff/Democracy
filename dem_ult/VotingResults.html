@@ -1,0 +1,99 @@
+{{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+        border: 1px solid #ccc;
+    }
+    table {border: 1px solid #ccc}
+    .bgr {
+        text-align: center;
+        background-color: indianred
+    }
+    .bgg {
+        text-align: center;
+        background-color: lightgreen
+    }
+    .bgy {
+        text-align: center;
+        background-color: yellow;
+    }
+    .centered {text-align: center}
+</style>
+<h2 id="part">Part I</h2>
+<h5 id="stage">Voting Stage Results</h5>
+<hr>
+&nbsp;
+
+<table>
+    <tr>
+        <td></td>
+        <td><b>Modification 1</b></td>
+        <td><b>Modification 2</b></td>
+        <!--<td><b>{{ group_vote }}</b></td>-->
+    </tr>
+    <tr>
+        <td>Number of votes</td>
+        <td class="centered">{{ fair_vote }}</td>
+        <td class="centered">{{ selfish_vote }}</td>
+    </tr>
+    <tr>
+        <td>The majority choice&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+        <td id="m1" class="centered"></td>
+        <td id="m2" class="centered"></td>
+    </tr>
+    <tr id="overridden_all" style="display: none">
+        <td id="overridden" colspan="3" style="text-align: center">Your votes were <b>{{ overridden }}</b></td>
+    </tr>
+    <tr id="computerChoice" style="display: none">
+        <td>The computer randomly selected</td>
+        <td id="cm1" class="centered"></td>
+        <td id="cm2" class="centered"></td>
+    </tr>
+</table>
+&nbsp;
+
+<p id="last_message" style="display: none">Thus, the Modification that is selected for this round is <b>{{ final }}</b>.</p>
+
+<button id="next_button" class="btn-primary" style="display: none">Next</button>
+
+<script src="{{ static 'someScripts.js' }}"></script>
+<script>
+    // Put correct part and round numbers to the heading
+    setPartAndRound({{ group.round_number }}, 'Voting Stage Results')
+
+    // Put checkbox to the majority choice box
+    if ('{{ group_vote }}' == 'Modification 1') {majChoice = document.getElementById("m1")}
+    else {majChoice = document.getElementById("m2")}
+    majChoice.innerHTML = '&#10004;';
+
+    // Put background color to the overriding cell and show/hide computer decision line
+    if ("{{ overridden }}" == 'Considered') {
+        document.getElementById('overridden').className='bgg'
+    }
+    else {
+        document.getElementById('overridden').className='bgr'
+
+        // Put checkbox to the computer's choice
+        if ('{{ final }}' == 'Modification 1') {comChoice = document.getElementById("cm1")}
+        else {comChoice = document.getElementById("cm2")}
+        comChoice.innerHTML = '&#10004;';
+    }
+
+    // Show next button after 5 seconds
+    let baseTimeout = 3500;
+    function showElement(elementId) {
+        document.getElementById(elementId).style.display=""
+    }
+    setTimeout(showElement, baseTimeout * 2, "overridden_all");
+    if ("{{ overridden }}" == 'Considered') {
+        setTimeout(showElement, baseTimeout * 3, "last_message");
+        setTimeout(showElement, baseTimeout * 4, "next_button");
+    } else {
+        setTimeout(showElement, baseTimeout * 3, "computerChoice");
+        setTimeout(showElement, baseTimeout * 4, "last_message");
+        setTimeout(showElement, baseTimeout * 5, "next_button");
+    }
+</script>
+{{ endblock }}
+
+

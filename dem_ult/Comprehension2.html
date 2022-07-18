@@ -1,0 +1,29 @@
+{{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+    }
+    .border-r {border: 1px solid #ccc; border-width: 0 1px 0 0;}
+</style>
+<h2>Comprehension Question 2</h2>
+<hr>
+&nbsp;
+<p style="text-align: center">Can the group's vote affect which modification is actually implemented?</p>
+
+<table style="width:100%">
+    <tr>
+        <td class="border-r" style="text-align:center"><button id="yes" type="button" onclick="clickRight('yes')">Yes</button></td>
+        <td style="text-align:center"><button id="no" type="button" onclick="clickWrong('no')">No</button></td>
+    </tr>
+</table>
+&nbsp;
+<p id="answer" style="display: none">Yes. If the computer chooses to consider the votes, the Modification for which your group voted gets implemented.</p>
+
+&nbsp;
+
+<button id="next_button" class="otree-btn-next btn btn-primary" style="display: none">Next</button>
+
+<input type="hidden" name="comp2" id="comp_form" />
+
+<script src="{{ static 'someScripts.js' }}"></script>
+{{ endblock }}

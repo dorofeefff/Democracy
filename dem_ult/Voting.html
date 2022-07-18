@@ -1,0 +1,34 @@
+{{ block content }}
+<style>
+th, td {
+  padding: 15px;
+}
+.border-r {border: 1px solid #ccc; border-width: 0 1px 0 0;}
+</style>
+
+<h2 id="part"></h2>
+<h5 id="stage">Voting Stage</h5>
+<hr>
+&nbsp;
+<p>Please choose one of the two Modifications by pressing a corresponding button below.</p>
+<table style="width:100%">
+  <tr>
+      <td class="border-r" style="text-align:center"><b>Modification 1</b></td>
+      <td style="text-align:center"><b>Modification 2</b></td>
+  </tr>
+  <tr>
+    <td class="border-r">Individual A will be given {{ endowment }} points and will be able to allocate <b>from {{ send_min }} to {{ send_fair }} points</b> to Individual B.</td>
+    <td>Individual A will be given {{ endowment }} points and will be able to allocate <b>from {{ send_selfish }} to {{ send_max }} points</b> to Individual B.</td>
+  </tr>
+    <tr>
+        <td class="border-r" style="text-align:center"><button name="vote" value=0 class="btn-primary">Vote</button></td>
+        <td style="text-align:center"><button name="vote" value=1 class="btn-primary">Vote</button></td>
+    </tr>
+</table>
+
+<script src="{{ static 'someScripts.js' }}"></script>
+<script>
+    // Put correct part and round numbers to the heading
+    setPartAndRound({{ group.round_number }}, 'Voting Stage')
+</script>
+{{ endblock }}

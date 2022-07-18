@@ -1,0 +1,29 @@
+{{ block content }}
+<style>
+    th, td {
+        padding: 15px;
+    }
+    .border-r {border: 1px solid #ccc; border-width: 0 1px 0 0;}
+</style>
+<h2>Comprehension Question 4</h2>
+<hr>
+&nbsp;
+<p style="text-align: center">Suppose that in round 3 you are Individual B. Will you find out how many points Individual A allocated to you at the end of round 3?</p>
+
+<table style="width:100%">
+    <tr>
+        <td class="border-r" style="text-align:center"><button id="yes" type="button" onclick="clickWrong('yes')">Yes</button></td>
+        <td style="text-align:center"><button id="no" type="button" onclick="clickRight('no')">No</button></td>
+    </tr>
+</table>
+&nbsp;
+<p id="answer" style="display: none">No. Decisions of Individuals A will be revealed only after all five rounds are over.</p>
+
+&nbsp;
+
+<button id="next_button" class="otree-btn-next btn btn-primary" style="display: none">Next</button>
+
+<input type="hidden" name="comp4" id="comp_form" />
+
+<script src="{{ static 'someScripts.js' }}"></script>
+{{ endblock }}
