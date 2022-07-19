@@ -30,7 +30,7 @@ class C(BaseConstants):
     GUESSER_ROLE = 'Individual C'
 
 
-# Useful variables for the dictator stage
+# Useful variables for the ultimatum stage
 def my_vars(player):
     mv = dict(
         endowment=C.ENDOWMENT.__int__(),
@@ -71,7 +71,7 @@ class Group(BaseGroup):
     group_vote = models.IntegerField()
     overridden = models.BooleanField()
     final_group_choice = models.IntegerField()
-    # Dictator stage
+    # Ultimatum stage
     type = models.StringField()
     send = models.CurrencyField()
     keep = models.CurrencyField()
@@ -86,7 +86,6 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     # Voting stage
     vote = models.IntegerField(
-        label="What do you want?",
         choices=[[0, "Modification 1"], [1, "Modification 2"]]
     )
     # Answers to comprehension questions
@@ -188,7 +187,7 @@ class VotingResults(Page):
         )
 
 
-class DictatorSend(Page):
+class UltimatumSend(Page):
     form_model = 'group'
     form_fields = ['send', 'sender_slider_default']
 
@@ -199,7 +198,7 @@ class DictatorSend(Page):
     @staticmethod
     def vars_for_template(player):
         mv = my_vars(player)
-        if mv['reveal_votes'] == True:
+        if mv['reveal_votes']:
             mv['b_vote'] = translate[player.group.get_player_by_role(C.RECEIVER_ROLE).vote]
         return mv
 
@@ -222,7 +221,7 @@ class UltimatumReceive(Page):
         return my_vars(player)
 
 
-class DictatorGuess(Page):
+class UltimatumGuess(Page):
 
     @staticmethod
     def is_displayed(player):
@@ -236,8 +235,8 @@ class DictatorGuess(Page):
         return my_vars(player)
 
 
-class ResultsWaitDictator(WaitPage):
-    template_name = 'dem/ResultsWaitDictator.html'
+class ResultsWaitUltimatum(WaitPage):
+    template_name = 'dem_ult/ResultsWaitUltimatum.html'
     after_all_players_arrive = set_payoffs
 
     @staticmethod
@@ -245,7 +244,7 @@ class ResultsWaitDictator(WaitPage):
         return dict(role=player.role)
 
 
-class DictatorResults(Page):
+class UltimatumResults(Page):
     @staticmethod
     def is_displayed(player):
         return (player.round_number == C.NUM_ROUNDS) or (player.round_number == 1)
@@ -315,6 +314,6 @@ class Comprehension4(Page):
         return player.round_number == 1
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend, UltimatumReceive,
-                 DictatorGuess, ResultsWaitDictator, DictatorResults, WaitBetweenParts,
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, UltimatumSend, UltimatumReceive,
+                 UltimatumGuess, ResultsWaitUltimatum, UltimatumResults, WaitBetweenParts,
                  Comprehension1, Comprehension2, Comprehension3, Comprehension4]
