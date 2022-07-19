@@ -3,13 +3,24 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
+        name='dem_u',
+        display_name="Democracy Ultimatum",
+        app_sequence=[
+            'dem_ult',
+            'payment_info'
+],
+        num_demo_participants=3,
+        use_browser_bots=False,
+        votes_revealed=True,
+    ),
+    dict(
         name='dem_t',
         display_name="Democracy Treatment",
         app_sequence=[
             'dem',
             'dem_survey',
             'payment_info'
-],
+        ],
         num_demo_participants=3,
         use_browser_bots=False,
         votes_revealed=True,

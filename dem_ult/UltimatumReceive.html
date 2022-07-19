@@ -1,0 +1,54 @@
+{{ block content }}
+<h2 id="part"></h2>
+<h5 id="stage"></h5>
+<hr>
+&nbsp;
+
+<p>You are <b>Individual B</b>.</p>
+
+<p>What is the minimal offer from Individual A that you will accept?</p>
+
+&nbsp;
+
+<div class="input-group">
+    <input type="range"
+           name="receive_min"
+           id="receive_slider"
+           min={{ low_bound }} max={{ up_bound }} step="1"
+           value="0"
+           class="form-range">
+</div>
+
+<p id="send_choice"></p>
+
+<button id="next_button" class="otree-btn-next btn btn-primary">Submit</button>
+
+<input type="hidden" name="receiver_slider_default" id="slider_default" />
+
+<script src="{{ static 'someScripts.js' }}"></script>
+<script>
+    // Put correct part and round numbers to the heading
+    setPartAndRound({{ group.round_number }}, 'Decision Stage')
+
+    // Message that the user will see based on their choice
+    function messageToSender(v) {
+        document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString() + " points.";
+    }
+
+    // Set the default value for the slider and the default message
+    sendDefault = {{ low_bound }} + Math.floor(Math.random() * ({{ up_bound }} - {{ low_bound }}));
+    document.getElementById("slider_default").value = sendDefault;
+    let sendSlider = document.getElementById("receive_slider");
+    sendSlider.value = (sendDefault);
+
+    // Hide next button until slider is moved
+    document.getElementById("next_button").style.display = "none";
+
+    // Behavior of the slider
+    sendSlider.oninput = function() {
+        messageToSender(this.value)
+        document.getElementById("next_button").style.display = "";
+    }
+</script>
+{{ endblock }}
+

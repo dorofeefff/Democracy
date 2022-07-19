@@ -75,9 +75,11 @@ class Group(BaseGroup):
     type = models.StringField()
     send = models.CurrencyField()
     keep = models.CurrencyField()
+    receive_min = models.CurrencyField()
     guess = models.CurrencyField()
     # Default position of the slider
     sender_slider_default = models.IntegerField()
+    receiver_slider_default = models.IntegerField()
     guesser_slider_default = models.IntegerField()
 
 
@@ -103,8 +105,13 @@ def set_payoffs(group: Group):
     # Size of error that is allowed to Guesser
     error = C.ERROR
 
-    sender.payoff = group.keep
-    receiver.payoff = group.send
+    if group.send >= group.receive_min:
+        sender.payoff = group.keep
+        receiver.payoff = group.send
+    else:
+        sender.payoff = 0
+        receiver.payoff = 0
+
     guesser.payoff = int(abs(group.send - group.guess) <= error) * C.GUESSER_BONUS
 
 
@@ -201,6 +208,20 @@ class DictatorSend(Page):
         player.group.keep = C.ENDOWMENT - player.group.send
 
 
+class UltimatumReceive(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.role == C.RECEIVER_ROLE
+
+    form_model = 'group'
+    form_fields = ['receive_min', 'receiver_slider_default']
+
+    @staticmethod
+    def vars_for_template(player):
+        return my_vars(player)
+
+
 class DictatorGuess(Page):
 
     @staticmethod
@@ -294,6 +315,6 @@ class Comprehension4(Page):
         return player.round_number == 1
 
 
-page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend,
+page_sequence = [Voting, ResultsWaitVoting, VotingResults, DictatorSend, UltimatumReceive,
                  DictatorGuess, ResultsWaitDictator, DictatorResults, WaitBetweenParts,
                  Comprehension1, Comprehension2, Comprehension3, Comprehension4]
