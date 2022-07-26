@@ -153,7 +153,7 @@ class ResultsWaitVoting(WaitPage):
             group.group_vote = 2  # group tied
 
         # Random overriding
-        group.overridden = random.choice([True, False])
+        group.overridden = random.choices([True, False], weights=[2/3, 1/3], k=1)[0]
 
         # Determine final choice
         if group.overridden or group.group_vote == 2:
