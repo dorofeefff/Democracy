@@ -31,7 +31,8 @@ class Player(BasePlayer):
 class PaymentInfo(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(final_payoff=player.participant.payoff_plus_participation_fee)
+        round_payoff = round(player.participant.payoff_plus_participation_fee().__float__() * 2) / 2
+        return dict(final_payoff=round_payoff)
 
 
 page_sequence = [PaymentInfo]

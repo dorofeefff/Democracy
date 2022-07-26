@@ -49,7 +49,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1/350, participation_fee=10.00, doc=""
+    real_world_currency_per_point=1/330, participation_fee=7.00, doc=""
 )
 
 PARTICIPANT_FIELDS = []
@@ -60,19 +60,21 @@ SESSION_FIELDS = []
 LANGUAGE_CODE = 'en'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
+REAL_WORLD_CURRENCY_CODE = 'EUR'
 USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='cess',
-        display_name='CESS',
+        name='TU_LAB',
+        display_name='TU LAB',
+        participant_label_file='tu_lab.txt',
+        use_secure_urls=False,
     )
 ]
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+ADMIN_PASSWORD = 'password'
 
 DEMO_PAGE_INTRO_HTML = """
 Here are some oTree games.
