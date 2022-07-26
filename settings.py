@@ -7,11 +7,13 @@ SESSION_CONFIGS = [
         display_name="Democracy Ultimatum",
         app_sequence=[
             'dem_ult',
+            'dem_survey',
             'payment_info'
-],
+        ],
         num_demo_participants=3,
         use_browser_bots=False,
-        votes_revealed=True,
+        votes_revealed=False,
+        ultimatum=True,
     ),
     dict(
         name='dem_t',
@@ -24,6 +26,7 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
         use_browser_bots=False,
         votes_revealed=True,
+        ultimatum=False,
     ),
     dict(
         name='dem_b',
@@ -36,6 +39,7 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
         use_browser_bots=False,
         votes_revealed=False,
+        ultimatum=False,
     ),
 ]
 

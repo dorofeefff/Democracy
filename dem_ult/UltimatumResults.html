@@ -25,6 +25,9 @@
     <tr id="sends">
         <td><i>Individual A allocated to Individual B</i></td>
     </tr>
+    <tr id="thresholds">
+        <td><i>Individual B's threshold</i></td>
+    </tr>
     <tr id="guesses">
         <td><i>Your guess, if Individual C</i></td>
     </tr>
@@ -44,6 +47,7 @@
     let roles = {{ roles }};
     let payoffs = {{ payoffs }};
     let sends = {{ sends }};
+    let thresholds = {{ thresholds }};
     let guesses = {{ guesses }};
     let n = roles.length;
 
@@ -59,6 +63,7 @@
         make("roles", roles[i]);
         make("payoffs", payoffs[i]);
         make("sends", sends[i]);
+        make("thresholds", thresholds[i]);
         make("guesses", guesses[i]);
     }
 

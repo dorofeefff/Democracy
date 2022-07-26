@@ -6,7 +6,7 @@
 
 <p>You are <b>Individual A</b>.</p>
 
-<p>Choose how many of the {{ C.ENDOWMENT }} you will allocate to Individual B.</p>
+<p>Choose how many of the {{ C.ENDOWMENT }} you will offer to Individual B.</p>
 
 <p id="b_vote"></p>
 
@@ -43,7 +43,7 @@
     // Message that the user will see based on their choice
     function messageToSender(v) {
         document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString() + " points.";
-        document.getElementById("keep_choice").innerHTML = "You keep for yourself: " + ({{ C.ENDOWMENT.__int__() }} - v).toString() + " points.";
+        document.getElementById("keep_choice").innerHTML = "If you offer is accepted, you will keep for yourself: " + ({{ C.ENDOWMENT.__int__() }} - v).toString() + " points.";
     }
 
     // Set the default value for the slider and the default message

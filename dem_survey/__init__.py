@@ -289,6 +289,9 @@ class Player(BasePlayer):
     exit5 = models.LongStringField(
         label='Did your behavior change when the same Modification was selected by voting as opposed to randomly selected after votes were overridden?'
     )
+    exitR = models.LongStringField(
+        label='If you ever were Individual B, how did you choose your threshold?'
+    )
 
     # World Value Survey
 
@@ -406,7 +409,13 @@ class Demographics(Page):
 
 class ExitSurvey(Page):
     form_model = 'player'
-    form_fields = ['exit1', 'exit2', 'exit3', 'exit4', 'exit5']
+
+    @staticmethod
+    def get_form_fields(player):
+        if player.session.config['ultimatum']:
+            return ['exit1', 'exitR', 'exit2', 'exit3', 'exit4', 'exit5']
+        else:
+            return ['exit1', 'exit2', 'exit3', 'exit4', 'exit5']
 
 
 class WVS1(Page):

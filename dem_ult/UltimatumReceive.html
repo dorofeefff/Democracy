@@ -6,7 +6,9 @@
 
 <p>You are <b>Individual B</b>.</p>
 
-<p>What is the minimal offer from Individual A that you will accept?</p>
+<p>What is the minimum offer from Individual A that you will accept?</p>
+
+<p>Individual A can offer you any number of points between {{ low_bound }} and {{ up_bound }}.</p>
 
 &nbsp;
 
@@ -19,7 +21,8 @@
            class="form-range">
 </div>
 
-<p id="send_choice"></p>
+<p id="threshold_choice"></p>
+<p id="additional_message"></p>
 
 <button id="next_button" class="otree-btn-next btn btn-primary">Submit</button>
 
@@ -32,7 +35,8 @@
 
     // Message that the user will see based on their choice
     function messageToSender(v) {
-        document.getElementById("send_choice").innerHTML = "Your choice: " + v.toString() + " points.";
+        document.getElementById("threshold_choice").innerHTML = "Your choice: " + v.toString() + " points.";
+        document.getElementById("additional_message").innerHTML = "If the number of points that Individual A allocates to you is greater or equal than this threshold, the offer will be automatically accepted. Otherwise, the offer will be automatically rejected."
     }
 
     // Set the default value for the slider and the default message

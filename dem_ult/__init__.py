@@ -259,12 +259,14 @@ class UltimatumResults(Page):
         r = [p[i].role for i in range(len(p))]
         f = [p[i].payoff.__int__() for i in range(len(p))]
         s = [p[i].group.send.__int__() for i in range(len(p))]
+        t = [p[i].group.receive_min.__int__() for i in range(len(p))]
         g = ['' for i in range(len(p))]
         for i in range(len(p)):
             if p[i].role == 'Individual C':
                 g[i] = p[i].group.guess.__int__()
         return dict(
             sends=s,
+            thresholds=t,
             roles=r,
             payoffs=f,
             guesses=g,
